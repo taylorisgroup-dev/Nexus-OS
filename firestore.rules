@@ -1,0 +1,165 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Default deny-by-default global barrier
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    // Strict Owner Gate: Only the explicitly configured executive account can access
+    function isOwner() {
+      return isVerified() && (
+        request.auth.token.email == 'nexuspremiumsolutions@gmail.com'
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Connection testing endpoint
+    match /test/connection {
+      allow get: if isSignedIn();
+    }
+
+    // Prospects collection
+    match /prospects/{prospectId} {
+      allow get, list: if isOwner();
+      allow create: if isOwner() 
+        && isValidId(prospectId) 
+        && incoming().ownerId == request.auth.uid 
+        && incoming().ownerEmail == request.auth.token.email
+        && incoming().company is string && incoming().company.size() > 0 && incoming().company.size() <= 200
+        && incoming().contactName is string && incoming().contactName.size() > 0 && incoming().contactName.size() <= 150
+        && incoming().status is string;
+      allow update: if isOwner() 
+        && isValidId(prospectId) 
+        && incoming().ownerId == existing().ownerId
+        && incoming().ownerEmail == existing().ownerEmail;
+      allow delete: if isOwner() && isValidId(prospectId);
+
+      // Interactions subcollection
+      match /interactions/{interactionId} {
+        allow get, list: if isOwner();
+        allow create: if isOwner() 
+          && isValidId(prospectId) 
+          && isValidId(interactionId) 
+          && incoming().ownerId == request.auth.uid
+          && incoming().prospectId == prospectId
+          && incoming().summary is string && incoming().summary.size() > 0 && incoming().summary.size() <= 2000;
+        allow update: if isOwner() 
+          && isValidId(prospectId) 
+          && isValidId(interactionId) 
+          && incoming().ownerId == existing().ownerId
+          && incoming().prospectId == existing().prospectId;
+        allow delete: if isOwner() && isValidId(prospectId) && isValidId(interactionId);
+      }
+    }
+
+    // Offers & Products
+    match /offers/{offerId} {
+      allow get, list: if isOwner();
+      allow create: if isOwner() 
+        && isValidId(offerId) 
+        && incoming().ownerId == request.auth.uid
+        && incoming().ownerEmail == request.auth.token.email
+        && incoming().name is string && incoming().name.size() > 0 && incoming().name.size() <= 200
+        && incoming().status is string;
+      allow update: if isOwner() 
+        && isValidId(offerId) 
+        && incoming().ownerId == existing().ownerId
+        && incoming().ownerEmail == existing().ownerEmail;
+      allow delete: if isOwner() && isValidId(offerId);
+    }
+
+    // Projects
+    match /projects/{projectId} {
+      allow get, list: if isOwner();
+      allow create: if isOwner() 
+        && isValidId(projectId) 
+        && incoming().ownerId == request.auth.uid
+        && incoming().ownerEmail == request.auth.token.email
+        && incoming().title is string && incoming().title.size() > 0 && incoming().title.size() <= 200
+        && incoming().status is string;
+      allow update: if isOwner() 
+        && isValidId(projectId) 
+        && incoming().ownerId == existing().ownerId
+        && incoming().ownerEmail == existing().ownerEmail;
+      allow delete: if isOwner() && isValidId(projectId);
+    }
+
+    // Tasks / Actions
+    match /tasks/{taskId} {
+      allow get, list: if isOwner();
+      allow create: if isOwner() 
+        && isValidId(taskId) 
+        && incoming().ownerId == request.auth.uid
+        && incoming().ownerEmail == request.auth.token.email
+        && incoming().title is string && incoming().title.size() > 0 && incoming().title.size() <= 250
+        && incoming().status is string;
+      allow update: if isOwner() 
+        && isValidId(taskId) 
+        && incoming().ownerId == existing().ownerId
+        && incoming().ownerEmail == existing().ownerEmail;
+      allow delete: if isOwner() && isValidId(taskId);
+    }
+
+    // Ideas
+    match /ideas/{ideaId} {
+      allow get, list: if isOwner();
+      allow create: if isOwner() 
+        && isValidId(ideaId) 
+        && incoming().ownerId == request.auth.uid
+        && incoming().ownerEmail == request.auth.token.email
+        && incoming().title is string && incoming().title.size() > 0 && incoming().title.size() <= 250
+        && incoming().status is string;
+      allow update: if isOwner() 
+        && isValidId(ideaId) 
+        && incoming().ownerId == existing().ownerId
+        && incoming().ownerEmail == existing().ownerEmail;
+      allow delete: if isOwner() && isValidId(ideaId);
+    }
+
+    // Decisions
+    match /decisions/{decisionId} {
+      allow get, list: if isOwner();
+      allow create: if isOwner() 
+        && isValidId(decisionId) 
+        && incoming().ownerId == request.auth.uid
+        && incoming().ownerEmail == request.auth.token.email
+        && incoming().title is string && incoming().title.size() > 0 && incoming().title.size() <= 250
+        && incoming().status is string;
+      allow update: if isOwner() 
+        && isValidId(decisionId) 
+        && incoming().ownerId == existing().ownerId
+        && incoming().ownerEmail == existing().ownerEmail;
+      allow delete: if isOwner() && isValidId(decisionId);
+    }
+
+    // Settings
+    match /settings/{settingsId} {
+      allow get, list: if isOwner();
+      allow create, update: if isOwner() 
+        && isValidId(settingsId)
+        && incoming().ownerEmail == request.auth.token.email;
+      allow delete: if isOwner() && isValidId(settingsId);
+    }
+  }
+}

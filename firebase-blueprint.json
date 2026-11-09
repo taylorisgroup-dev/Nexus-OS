@@ -1,0 +1,248 @@
+{
+  "entities": {
+    "Prospect": {
+      "title": "Prospect",
+      "description": "Fiche prospect B2B pour NEXUS Premium Solutions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "company": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "contactName": { "type": "string", "minLength": 1, "maxLength": 150 },
+        "email": { "type": "string", "maxLength": 200 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "sector": { "type": "string", "maxLength": 100 },
+        "needsSummary": { "type": "string", "maxLength": 2000 },
+        "status": {
+          "type": "string",
+          "enum": [
+            "À qualifier",
+            "À contacter",
+            "Contacté",
+            "Échange",
+            "Rendez-vous",
+            "Proposition envoyée",
+            "Gagné",
+            "Perdu",
+            "En attente"
+          ]
+        },
+        "nextContactDate": { "type": "string", "maxLength": 30 },
+        "notes": { "type": "string", "maxLength": 5000 },
+        "isArchived": { "type": "boolean" },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "ownerEmail": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["company", "contactName", "status", "ownerId", "ownerEmail"]
+    },
+    "Interaction": {
+      "title": "Interaction",
+      "description": "Interaction datée avec un prospect",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "prospectId": { "type": "string", "maxLength": 128 },
+        "date": { "type": "string", "maxLength": 30 },
+        "type": {
+          "type": "string",
+          "enum": ["Appel", "Email", "Réunion", "Découverte", "Envoi proposition", "Relance"]
+        },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "nextStep": { "type": "string", "maxLength": 1000 },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["prospectId", "date", "type", "summary", "ownerId"]
+    },
+    "Offer": {
+      "title": "Offer",
+      "description": "Offre ou produit d'ingénierie d'affaires et digitalisation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "code": { "type": "string", "maxLength": 50 },
+        "targetAudience": { "type": "string", "maxLength": 300 },
+        "businessValue": { "type": "string", "maxLength": 2000 },
+        "deliverables": { "type": "string", "maxLength": 2000 },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Idée",
+            "À valider",
+            "Cadrage",
+            "En production",
+            "À tester",
+            "Prêt à vendre",
+            "Actif",
+            "En pause"
+          ]
+        },
+        "isArchived": { "type": "boolean" },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "ownerEmail": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "status", "ownerId", "ownerEmail"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Projet d'orchestration ou digitalisation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "offerId": { "type": "string", "maxLength": 128 },
+        "offerName": { "type": "string", "maxLength": 200 },
+        "prospectId": { "type": "string", "maxLength": 128 },
+        "clientName": { "type": "string", "maxLength": 200 },
+        "businessObjective": { "type": "string", "maxLength": 2000 },
+        "scope": { "type": "string", "maxLength": 3000 },
+        "status": {
+          "type": "string",
+          "enum": [
+            "À cadrer",
+            "Prêt",
+            "En cours",
+            "Bloqué",
+            "À valider",
+            "Livré",
+            "En pause"
+          ]
+        },
+        "startDate": { "type": "string", "maxLength": 30 },
+        "targetDate": { "type": "string", "maxLength": 30 },
+        "notes": { "type": "string", "maxLength": 4000 },
+        "isArchived": { "type": "boolean" },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "ownerEmail": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "status", "ownerId", "ownerEmail"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Action ou tâche opérationnelle",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 250 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "dueDate": { "type": "string", "maxLength": 30 },
+        "priority": {
+          "type": "string",
+          "enum": ["Haute", "Moyenne", "Basse"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["À faire", "En cours", "Terminé"]
+        },
+        "projectId": { "type": "string", "maxLength": 128 },
+        "projectTitle": { "type": "string", "maxLength": 200 },
+        "prospectId": { "type": "string", "maxLength": 128 },
+        "prospectName": { "type": "string", "maxLength": 200 },
+        "isArchived": { "type": "boolean" },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "ownerEmail": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "status", "priority", "ownerId", "ownerEmail"]
+    },
+    "Idea": {
+      "title": "Idea",
+      "description": "Idée d'innovation ou d'opportunité business",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 250 },
+        "theme": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 3000 },
+        "potentialImpact": { "type": "string", "maxLength": 1000 },
+        "status": {
+          "type": "string",
+          "enum": ["Nouvelle", "À explorer", "Retenue", "Rejetée"]
+        },
+        "isArchived": { "type": "boolean" },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "ownerEmail": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "status", "ownerId", "ownerEmail"]
+    },
+    "Decision": {
+      "title": "Decision",
+      "description": "Décision stratégique enregistrée avec justification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 250 },
+        "date": { "type": "string", "maxLength": 30 },
+        "context": { "type": "string", "maxLength": 3000 },
+        "decision": { "type": "string", "maxLength": 3000 },
+        "businessJustification": { "type": "string", "maxLength": 2000 },
+        "status": {
+          "type": "string",
+          "enum": ["Actée", "En révision", "Archivée"]
+        },
+        "isArchived": { "type": "boolean" },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "ownerEmail": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "date", "decision", "status", "ownerId", "ownerEmail"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Configuration du cockpit NEXUS OS",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "ownerEmail": { "type": "string", "maxLength": 200 },
+        "ownerName": { "type": "string", "maxLength": 100 },
+        "companyName": { "type": "string", "maxLength": 150 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["ownerEmail"]
+    }
+  },
+  "firestore": {
+    "/prospects/{prospectId}": {
+      "schema": { "$ref": "entities.Prospect" },
+      "description": "Collection des prospects B2B"
+    },
+    "/prospects/{prospectId}/interactions/{interactionId}": {
+      "schema": { "$ref": "entities.Interaction" },
+      "description": "Historique des interactions datées par prospect"
+    },
+    "/offers/{offerId}": {
+      "schema": { "$ref": "entities.Offer" },
+      "description": "Catalogue d'offres et solutions"
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "entities.Project" },
+      "description": "Projets de digitalisation et orchestration"
+    },
+    "/tasks/{taskId}": {
+      "schema": { "$ref": "entities.Task" },
+      "description": "Tâches et actions opérationnelles"
+    },
+    "/ideas/{ideaId}": {
+      "schema": { "$ref": "entities.Idea" },
+      "description": "Registre des idées stratégiques"
+    },
+    "/decisions/{decisionId}": {
+      "schema": { "$ref": "entities.Decision" },
+      "description": "Journal des décisions prises"
+    },
+    "/settings/{settingsId}": {
+      "schema": { "$ref": "entities.Settings" },
+      "description": "Paramètres et profil dirigeant"
+    }
+  }
+}

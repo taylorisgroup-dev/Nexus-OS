@@ -1,0 +1,8 @@
+{
+  "name": "NEXUS OS",
+  "description": "Application web privée de pilotage pour NEXUS Premium Solutions. Ingénierie d'affaires, digitalisation et cockpit dirigeant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
