@@ -22,20 +22,28 @@ export const Header: React.FC<HeaderProps> = ({
       subtitle: 'Vue d’ensemble stratégique, pipeline et actions prioritaires du jour',
     },
     campaigns: {
-      title: 'Campagnes & Scraping B2B',
-      subtitle: 'Campagnes ciblées, extraction d’entreprises réelles et scripts adaptés',
+      title: 'Campagnes & Ciblages B2B',
+      subtitle: 'Campagnes ciblées, volumes d’acquisition et scripts commerciaux',
     },
     acquisition: {
-      title: 'Scraping & Acquisition Directe',
-      subtitle: 'Extraction en direct de données réelles vérifiées sur Google Maps et le web',
-    },
-    prospects: {
-      title: 'Fichier Prospects & Données Vérifiées',
-      subtitle: 'Entreprises réelles, coordonnées vérifiées Google Maps et audit web',
+      title: 'NEXUS DATA · Acquisition Réelle',
+      subtitle: 'Données certifiées INSEE / SIRENE, RCS, dirigeants et coordonnées géocodées',
     },
     phoning: {
-      title: 'Poste de Prospection Téléphonique',
-      subtitle: 'Poste concentré opérationnel · Numérotation manuelle & qualification de cadrage',
+      title: 'Canal 1 · Poste de Phoning Concentré',
+      subtitle: 'File d’appels priorisée, script dynamique en 5 étapes et matrice d’objections',
+    },
+    field: {
+      title: 'Canal 2 · Prospection Terrain',
+      subtitle: 'Organisation des tournées physiques, géolocalisation et comptes rendus de visite',
+    },
+    email: {
+      title: 'Canal 3 · Prospection Numérique & Emailing',
+      subtitle: 'Campagnes de messages ciblés via Microsoft Graph / Outlook avec archivage CRM',
+    },
+    prospects: {
+      title: 'Fichier Prospects & CRM Central',
+      subtitle: 'Entreprises réelles, coordonnées vérifiées, multi-contacts et cycle de vente',
     },
     offers: {
       title: 'Catalogue des Offres & Solutions',

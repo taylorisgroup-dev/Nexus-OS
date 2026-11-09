@@ -258,9 +258,11 @@ export interface SettingsDoc {
 
 export type ActiveSection =
   | 'cockpit'
-  | 'campaigns'
   | 'acquisition'
+  | 'campaigns'
   | 'phoning'
+  | 'field'
+  | 'email'
   | 'prospects'
   | 'offers'
   | 'projects'

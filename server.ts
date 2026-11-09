@@ -1,235 +1,240 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import rateLimit from 'express-rate-limit';
+import { z } from 'zod';
 import { GoogleGenAI } from '@google/genai';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '5mb' }));
 
-// Initialise Gemini client (reads process.env.GEMINI_API_KEY automatically)
+// 1. Limiteurs de débit (Protection Anti-DoS & Quotas)
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 120, // 120 requêtes par fenêtre
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Limite de requêtes atteinte. Veuillez patienter quelques minutes.' },
+});
+
+const aiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 40, // 40 requêtes IA par 15 min
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Quota de requêtes analytiques IA temporairement saturé. Veuillez patienter.' },
+});
+
+app.use('/api/', apiLimiter);
+
+// 2. Client Gemini
 const ai = new GoogleGenAI({});
 
-/**
- * Route: POST /api/scrape-prospects
- * Extrait des prospects B2B RÉELS et vérifiés sur Google Maps et le web.
- */
-app.post('/api/scrape-prospects', async (req: Request, res: Response) => {
+// 3. Schémas de Validation Zod
+const searchCompaniesSchema = z.object({
+  query: z.string().min(1).max(200),
+  location: z.string().max(100).optional().default(''),
+  postalCode: z.string().max(10).optional().default(''),
+  department: z.string().max(10).optional().default(''),
+  count: z.number().int().min(1).max(25).optional().default(10),
+});
+
+const enrichWebsiteSchema = z.object({
+  companyName: z.string().min(1).max(200),
+  websiteUrl: z.string().url().max(300),
+  siren: z.string().optional(),
+});
+
+// ==============================================================================
+// 4. MOTEUR D'ACQUISITION RÉEL (NEXUS DATA)
+// Source officielle : API Recherche d'entreprises / SIRENE (Gouvernement Français)
+// ZÉRO HALLUCINATION : 100% entreprises existantes avec SIREN, dirigeants et adresses
+// ==============================================================================
+
+app.post('/api/nexus-data/search-companies', async (req: Request, res: Response) => {
   try {
-    const {
-      targetSector = 'PME B2B',
-      location = 'France',
-      branchName = 'Ingénierie d’affaires & Digitalisation',
-      count = 8,
-    } = req.body;
-
-    const requestedCount = Math.min(Math.max(Number(count) || 8, 3), 20);
-
-    const prompt = `Tu es le moteur d'intelligence commerciale et d'acquisition de NEXUS Premium Solutions.
-Ta mission est d'extraire ${requestedCount} entreprises RÉELLES, EXISTANTES et VÉRIFIÉES sur Google Maps et le web dans le secteur suivant : "${targetSector}", localisées à "${location}".
-
-RÈGLES STRICTES DE VÉRACITÉ DES DONNÉES :
-- Ne génère JAMAIS d'entreprise imaginaire. Chaque entreprise doit être un établissement réel actif en France ou dans la région indiquée.
-- Le nom de l'entreprise ("company") doit être le nom commercial ou la raison sociale officielle réelle.
-- Le contact ("contactName") doit être le nom du dirigeant réel, gérant, président ou responsable d'établissement identifiable publiquement.
-- Le téléphone ("phone") doit être le vrai numéro direct ou standard professionnel français (format 01/02/03/04/05/09 ou 06/07).
-- Le site web ("website") doit être l'URL réelle du site officiel (ex: https://www.nom-entreprise.fr).
-- L'adresse postale ("address") doit être la vraie rue ou zone d'activité, avec le code postal ("postalCode") et la ville ("city").
-- Le lien Google Maps ("mapsUrl") doit être l'URL de recherche Google Maps exacte : https://www.google.com/maps/search/?api=1&query=NOM_ENTREPRISE+VILLE.
-- Le besoin ("needsSummary") doit cibler un vrai levier d'optimisation (digitalisation, refonte web, automatisation des process, prospection, conformité) que NEXUS Premium Solutions (${branchName}) peut adresser lors d'un cadrage de 45 minutes.
-
-Format de réponse attendu : tableau JSON STRICT sans texte parasite autour :
-[
-  {
-    "company": "Nom réel de l'entreprise",
-    "contactName": "Nom et prénom du dirigeant réel",
-    "phone": "04 XX XX XX XX",
-    "email": "contact@nom-entreprise.fr",
-    "website": "https://www.nom-entreprise.fr",
-    "address": "12 rue de l'Exemple",
-    "city": "Ville",
-    "postalCode": "69000",
-    "sector": "Activité précise",
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Nom+Entreprise+Ville",
-    "needsSummary": "Synthèse du besoin opérationnel qualifié",
-    "verified": true
-  }
-]`;
-
-    let responseText = '';
-    try {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.1-flash-lite',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-          temperature: 0.2,
-        },
+    const parseResult = searchCompaniesSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({
+        error: 'Paramètres de recherche invalides.',
+        details: parseResult.error.format(),
       });
-      responseText = response.text || '';
-    } catch (err: unknown) {
-      console.warn('Fallback to gemini-3.8-flash for scraping:', (err as Error).message);
-      const fallbackResponse = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-          temperature: 0.2,
-        },
-      });
-      responseText = fallbackResponse.text || '';
     }
 
-    let parsed = [];
-    try {
-      parsed = JSON.parse(responseText);
-      if (!Array.isArray(parsed) && (parsed as any).entreprises) {
-        parsed = (parsed as any).entreprises;
-      } else if (!Array.isArray(parsed) && (parsed as any).prospects) {
-        parsed = (parsed as any).prospects;
+    const { query, location, postalCode, department, count } = parseResult.data;
+
+    // Construction de la requête pour l'API Recherche d'Entreprises officielle
+    let searchUrl = `https://recherche-entreprises.api.gouv.fr/search?q=${encodeURIComponent(query)}&per_page=${count}`;
+    
+    if (postalCode && postalCode.trim()) {
+      searchUrl += `&code_postal=${encodeURIComponent(postalCode.trim())}`;
+    } else if (department && department.trim()) {
+      searchUrl += `&departement=${encodeURIComponent(department.trim())}`;
+    }
+
+    console.log(`[NEXUS DATA] Querying SIRENE API: ${searchUrl}`);
+
+    const apiResponse = await fetch(searchUrl, {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'NEXUS-OS-Commercial-Engineering/1.0',
+      },
+      signal: AbortSignal.timeout(10000), // Timeout 10s
+    });
+
+    if (!apiResponse.ok) {
+      throw new Error(`API SIRENE HTTP ${apiResponse.status}: ${apiResponse.statusText}`);
+    }
+
+    const data: any = await apiResponse.json();
+    const rawResults = data.results || [];
+
+    // Normalisation stricte des entreprises réelles
+    const verifiedCompanies = rawResults.map((item: any) => {
+      const siege = item.siege || {};
+      const dirigeantsList: any[] = [];
+
+      // Extraction des dirigeants physiques légaux au RCS
+      if (Array.isArray(item.dirigeants)) {
+        item.dirigeants.forEach((d: any) => {
+          if (d.nom || d.prenoms) {
+            dirigeantsList.push({
+              name: `${d.prenoms || ''} ${d.nom || ''}`.trim(),
+              role: d.qualite || 'Dirigeant / Représentant légal',
+            });
+          }
+        });
       }
-    } catch (parseErr) {
-      console.error('Failed to parse Gemini scraping response:', responseText);
-      return res.status(500).json({
-        error: 'Format de réponse invalide généré par le moteur d’acquisition.',
-        raw: responseText,
-      });
-    }
 
-    // Ensure mapsUrl is populated for every prospect
-    const sanitized = parsed.map((item: any) => {
-      const q = encodeURIComponent(`${item.company || ''} ${item.city || location}`);
+      const fullStreet = [siege.numero_voie, siege.type_voie, siege.libelle_voie]
+        .filter(Boolean)
+        .join(' ') || siege.adresse || 'Adresse déclarée au RCS';
+
+      const city = siege.libelle_commune || siege.commune || location || 'France';
+      const qMaps = encodeURIComponent(`${item.nom_complet || ''} ${city}`);
+      const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${qMaps}`;
+
       return {
-        ...item,
-        mapsUrl: item.mapsUrl || `https://www.google.com/maps/search/?api=1&query=${q}`,
-        verified: true,
+        id: `lead_${item.siren}_${Date.now()}`,
+        companyName: item.nom_complet || item.nom_raison_sociale || 'Entreprise vérifiée',
+        legalName: item.nom_raison_sociale || item.nom_complet,
+        siren: item.siren,
+        siret: siege.siret || null,
+        nafCode: item.activite_principale || null,
+        sector: query,
+        profession: item.libelle_activite_principale || query,
+        phone: null, // Le téléphone sera complété lors de l'audit ou vérification d'annuaire
+        email: null,
+        website: null,
+        addressStreet: fullStreet,
+        postalCode: siege.code_postal || postalCode || null,
+        city: city,
+        department: siege.departement || department || null,
+        region: siege.region || null,
+        latitude: siege.latitude ? parseFloat(siege.latitude) : null,
+        longitude: siege.longitude ? parseFloat(siege.longitude) : null,
+        mapsUrl,
+        legalDirectors: dirigeantsList,
+        verificationStatus: 'verified_sirene',
+        confidenceScore: 1.0,
+        provenanceSource: 'Annuaire Officiel des Entreprises (INSEE / SIRENE)',
+        trancheEffectif: item.tranche_effectif_salarie || 'Non renseigné',
+        dateCreation: item.date_creation || null,
+        etatAdministratif: item.etat_administratif || 'A', // A = Actif
       };
     });
 
     return res.json({
       success: true,
-      query: { targetSector, location, count: requestedCount },
-      count: sanitized.length,
-      prospects: sanitized,
+      query: { query, location, postalCode, count },
+      totalFound: data.total_results || verifiedCompanies.length,
+      companies: verifiedCompanies,
     });
   } catch (error: unknown) {
-    console.error('Error in /api/scrape-prospects:', error);
+    console.error('[NEXUS DATA] Search error:', error);
     return res.status(500).json({
-      error: (error as Error).message || 'Erreur lors de l’acquisition des prospects',
+      error: 'Échec de connexion au registre officiel des entreprises.',
+      details: (error as Error).message,
     });
   }
 });
 
-/**
- * Route: POST /api/enrich-prospect
- * Enrichissement en profondeur des données d'un prospect (Google Maps, Audit Web, Décideurs, Angle d'attaque NEXUS).
- */
-app.post('/api/enrich-prospect', async (req: Request, res: Response) => {
+// ==============================================================================
+// 5. AUDIT & ANALYSE DE SITE WEB EN TEMPS RÉEL (CADRAGE NEXUS)
+// Récupère le vrai contenu web et utilise Gemini UNIQUEMENT pour la synthèse
+// ==============================================================================
+
+app.post('/api/nexus-data/enrich-website', aiLimiter, async (req: Request, res: Response) => {
   try {
-    const { company, city, website, phone, sector } = req.body;
-    if (!company) {
-      return res.status(400).json({ error: 'Raison sociale manquante pour l’enrichissement' });
+    const parseResult = enrichWebsiteSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({ error: 'URL de site web invalide.' });
     }
 
-    const prompt = `Tu es l'analyste d'intelligence économique et d'enrichissement B2B de NEXUS Premium Solutions.
-Effectue l'enrichissement et la vérification complète de cette entreprise :
-- Entreprise : "${company}"
-- Ville / Zone : "${city || 'France'}"
-- Site Web actuel : "${website || 'Non renseigné'}"
-- Téléphone actuel : "${phone || 'Non renseigné'}"
-- Secteur : "${sector || 'B2B'}"
+    const { companyName, websiteUrl } = parseResult.data;
 
-Recherche et déduis les informations réelles et vérifiables :
-1. "fullAddress" : Adresse physique complète vérifiable (numéro, rue, code postal, ville).
-2. "verifiedPhone" : Numéro de téléphone direct vérifié au format français (ex: 04 78 ... ou 01 ...).
-3. "websiteStatus" : 'En ligne & actif' | 'En ligne avec carences' | 'Inaccessible' | 'À créer'.
-4. "digitalMaturity" : 'Faible' | 'Moyenne' | 'Avancée'.
-5. "detectedTechStack" : Résumé des technos ou outils visibles (CMS, analytics, formulaires, présence Google Business).
-6. "googleRating" : Note estimée Google Maps (ex: 4.6).
-7. "googleReviewCount" : Nombre d'avis estimé sur Google Maps (ex: 28).
-8. "decisionMakers" : Tableau des dirigeants ou décideurs identifiés avec leur rôle (ex: [{"name": "Jean Dupont", "role": "Directeur Général"}]).
-9. "keyPainPoints" : 3 douleurs organisationnelles ou digitales réelles et concrètes de ce type d'entreprise.
-10. "nexusHooks" : 3 arguments d'accroche chirurgicale personnalisés pour NEXUS Premium Solutions (cadrage 45 min sans engagement).
-11. "sirenStatus" : Mention légale ou immatriculation estimée (ex: "Société immatriculée au RCS").
-12. "googleMapsUrl" : URL directe de recherche Google Maps.
+    console.log(`[NEXUS AUDIT] Fetching website content: ${websiteUrl}`);
 
-Réponds en JSON STRICT :
+    let htmlText = '';
+    try {
+      const webRes = await fetch(websiteUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) NEXUS-OS/1.0',
+          'Accept': 'text/html,application/xhtml+xml',
+        },
+        signal: AbortSignal.timeout(6000), // Timeout 6s
+      });
+
+      if (webRes.ok) {
+        const fullHtml = await webRes.text();
+        // Élimine balises scripts/styles et ne garde que le texte visible utile (max 6000 caractères)
+        htmlText = fullHtml
+          .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+          .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+          .replace(/<[^>]+>/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 6000);
+      }
+    } catch (fetchErr) {
+      console.warn(`[NEXUS AUDIT] Could not scrape direct HTML from ${websiteUrl}:`, (fetchErr as Error).message);
+    }
+
+    // Détection regex de numéros de téléphone et emails visibles sur la page
+    const phoneMatches = htmlText.match(/(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/g) || [];
+    const emailMatches = htmlText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [];
+
+    const detectedPhone = phoneMatches[0]?.trim() || null;
+    const detectedEmail = emailMatches[0]?.trim() || null;
+
+    // Analyse Gemini STRICTE sur les données textuelles réellement récupérées
+    const prompt = `Tu es l'ingénieur d'affaires senior de NEXUS Premium Solutions.
+Entreprise analysée : "${companyName}"
+URL officielle : "${websiteUrl}"
+Texte réel extrait du site web :
+"""
+${htmlText || 'Page web inaccessible ou protégée par pare-feu.'}
+"""
+
+RÈGLES STRICTES :
+- N'invente AUCUN fait ni chiffre.
+- Base-toi uniquement sur le texte fourni ci-dessus.
+- Synthétise la maturité digitale de l'entreprise ('Faible' | 'Moyenne' | 'Avancée').
+- Identifie 3 prestations visibles.
+- Formule 3 accroches d'ingénierie concrètes pour NEXUS Premium Solutions (cadrage exécutif de 45 minutes sans engagement).
+
+Réponds au format JSON STRICT :
 {
-  "fullAddress": "...",
-  "verifiedPhone": "...",
-  "websiteStatus": "...",
-  "digitalMaturity": "...",
-  "detectedTechStack": "...",
-  "googleRating": 4.5,
-  "googleReviewCount": 18,
-  "decisionMakers": [{"name": "...", "role": "..."}],
-  "keyPainPoints": ["...", "...", "..."],
-  "nexusHooks": ["...", "...", "..."],
-  "sirenStatus": "...",
-  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=..."
+  "digitalMaturity": "Faible" | "Moyenne" | "Avancée",
+  "visibleServices": ["...", "...", "..."],
+  "painPoints": ["...", "...", "..."],
+  "nexusMeetingAngles": ["...", "...", "..."]
 }`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.1-flash-lite',
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-        temperature: 0.2,
-      },
-    });
-
-    const parsed = JSON.parse(response.text || '{}');
-    const q = encodeURIComponent(`${company} ${city || ''}`);
-    parsed.googleMapsUrl = parsed.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${q}`;
-    parsed.verified = true;
-
-    return res.json({
-      success: true,
-      enrichedData: parsed,
-    });
-  } catch (error: unknown) {
-    console.error('Error in /api/enrich-prospect:', error);
-    return res.status(500).json({
-      error: (error as Error).message || 'Erreur lors de l’enrichissement des données du prospect',
-    });
-  }
-});
-
-/**
- * Route: POST /api/parse-pasted-prospects
- * Convertit un texte brut (copié-collé d'Excel, LinkedIn, annuaire ou texte libre) en prospects structurés.
- */
-app.post('/api/parse-pasted-prospects', async (req: Request, res: Response) => {
-  try {
-    const { rawText } = req.body;
-    if (!rawText || typeof rawText !== 'string' || !rawText.trim()) {
-      return res.status(400).json({ error: 'Texte brut manquant' });
-    }
-
-    const prompt = `Tu es un assistant de normalisation de données B2B pour NEXUS OS.
-Voici un texte brut de contacts copié par l'utilisateur :
-
-"""
-${rawText.slice(0, 8000)}
-"""
-
-Analyse et extrait chaque entreprise/contact sous forme de tableau JSON strict :
-[
-  {
-    "company": "Nom de l'entreprise",
-    "contactName": "Nom du dirigeant ou contact (si non spécifié, Direction)",
-    "phone": "Téléphone format français",
-    "email": "Email si présent",
-    "website": "Site web si présent",
-    "city": "Ville si présente",
-    "sector": "Secteur d'activité",
-    "needsSummary": "Besoins ou notes si déductibles"
-  }
-]`;
-
-    const response = await ai.models.generateContent({
+    const aiRes = await ai.models.generateContent({
       model: 'gemini-3.1-flash-lite',
       contents: prompt,
       config: {
@@ -238,20 +243,51 @@ Analyse et extrait chaque entreprise/contact sous forme de tableau JSON strict :
       },
     });
 
-    const parsed = JSON.parse(response.text || '[]');
+    const parsedAi = JSON.parse(aiRes.text || '{}');
+
     return res.json({
       success: true,
-      prospects: Array.isArray(parsed) ? parsed : [],
+      companyName,
+      websiteUrl,
+      detectedPhone,
+      detectedEmail,
+      audit: {
+        digitalMaturity: parsedAi.digitalMaturity || 'Moyenne',
+        visibleServices: parsedAi.visibleServices || [],
+        painPoints: parsedAi.painPoints || [],
+        nexusMeetingAngles: parsedAi.nexusMeetingAngles || [],
+      },
     });
   } catch (error: unknown) {
-    console.error('Error in /api/parse-pasted-prospects:', error);
+    console.error('[NEXUS AUDIT] Error:', error);
     return res.status(500).json({
-      error: (error as Error).message || 'Erreur d’analyse des contacts',
+      error: 'Erreur lors de l’audit web de l’entreprise.',
+      details: (error as Error).message,
     });
   }
 });
 
-// Vite middleware or production static serving
+// ==============================================================================
+// 6. MODULE MICROSOFT GRAPH & OUTLOOK (STATUT & PREPARATION)
+// ==============================================================================
+
+app.get('/api/outlook/status', (_req: Request, res: Response) => {
+  const hasAzureConfig = Boolean(
+    process.env.MICROSOFT_CLIENT_ID &&
+    process.env.MICROSOFT_CLIENT_SECRET
+  );
+
+  return res.json({
+    configured: hasAzureConfig,
+    provider: 'Microsoft Graph / Azure AD',
+    scopes: ['User.Read', 'Mail.ReadWrite', 'Mail.Send', 'Calendars.ReadWrite'],
+    message: hasAzureConfig
+      ? 'Intégration Microsoft Graph prête pour synchronisation des emails et calendriers.'
+      : 'Identifiants Azure AD (MICROSOFT_CLIENT_ID, MICROSOFT_CLIENT_SECRET) en attente dans .env.',
+  });
+});
+
+// 7. Servir le frontend Vite en développement ou distribution statique
 async function startServer() {
   const isProd = process.env.NODE_ENV === 'production';
   const PORT = Number(process.env.PORT) || 3000;

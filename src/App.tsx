@@ -16,6 +16,9 @@ import { IdeasDecisionsView } from './components/ideas/IdeasDecisionsView';
 import { SettingsView } from './components/settings/SettingsView';
 import { PhoningStationView } from './components/phoning/PhoningStationView';
 import { LeadScraperView } from './components/acquisition/LeadScraperView';
+import { NexusDataAcquisitionView } from './components/acquisition/NexusDataAcquisitionView';
+import { FieldProspectingView } from './components/field/FieldProspectingView';
+import { EmailProspectingView } from './components/email/EmailProspectingView';
 import { CampaignsView } from './components/campaigns/CampaignsView';
 import { Modal } from './components/ui/Modal';
 import { TASK_PRIORITIES, TASK_STATUSES, type ActiveSection, type TaskPriority, type TaskStatus } from './types/nexus';
@@ -106,6 +109,8 @@ const AppContent: React.FC<{
     acquisition: undefined,
     prospects: undefined,
     phoning: undefined,
+    field: undefined,
+    email: undefined,
     offers: undefined,
     projects: undefined,
     tasks: 'Nouvelle Action',
@@ -163,7 +168,10 @@ const AppContent: React.FC<{
             />
           )}
           {currentSection === 'acquisition' && (
-            <LeadScraperView onNavigate={onSelectSection} />
+            <NexusDataAcquisitionView
+              onNavigateToPhoning={() => onSelectSection('phoning')}
+              onNavigateToCrm={() => onSelectSection('prospects')}
+            />
           )}
           {currentSection === 'prospects' && (
             <ProspectsView onNavigate={onSelectSection} />
@@ -174,6 +182,8 @@ const AppContent: React.FC<{
               initialCampaignId={selectedPhoningCampaignId}
             />
           )}
+          {currentSection === 'field' && <FieldProspectingView />}
+          {currentSection === 'email' && <EmailProspectingView />}
           {currentSection === 'offers' && <OffersView />}
           {currentSection === 'projects' && <ProjectsView />}
           {currentSection === 'tasks' && <TasksView />}

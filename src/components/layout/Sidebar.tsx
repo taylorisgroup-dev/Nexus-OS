@@ -16,6 +16,10 @@ import {
   MapPin,
   Sparkles,
   ExternalLink,
+  Search,
+  Compass,
+  Mail,
+  Zap,
 } from 'lucide-react';
 import type { ActiveSection } from '../../types/nexus';
 import { useAuth } from '../../context/AuthContext';
@@ -50,7 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }[];
   }[] = [
     {
-      groupTitle: 'Prospection & Exécution',
+      groupTitle: 'Prospection & 3 Canaux',
       items: [
         {
           id: 'cockpit',
@@ -58,19 +62,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
           icon: LayoutDashboard,
         },
         {
+          id: 'acquisition',
+          label: 'NEXUS DATA (Acquisition)',
+          icon: Zap,
+        },
+        {
           id: 'phoning',
-          label: 'Poste Phoning & Appels',
+          label: '1. Poste Phoning & Appels',
           icon: PhoneCall,
         },
         {
+          id: 'field',
+          label: '2. Prospection Terrain',
+          icon: Compass,
+        },
+        {
+          id: 'email',
+          label: '3. Emailing Outlook 365',
+          icon: Mail,
+        },
+        {
           id: 'campaigns',
-          label: 'Campagnes & Scraping',
+          label: 'Campagnes & Ciblages',
           icon: Layers,
           badge: phoningCampaigns.length > 0 ? phoningCampaigns.length : undefined,
         },
         {
           id: 'prospects',
-          label: 'Fichier Prospects & Maps',
+          label: 'Fichier Prospects CRM',
           icon: Users,
           badge: kpis.activeProspects > 0 ? kpis.activeProspects : undefined,
         },

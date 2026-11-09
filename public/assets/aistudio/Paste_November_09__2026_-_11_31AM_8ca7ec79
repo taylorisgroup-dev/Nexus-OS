@@ -1,0 +1,1568 @@
+# MASTER PROMPT DIRECTEUR — RECONSTRUCTION INTÉGRALE DE NEXUS OS
+
+**Version : 1.0 — 9 novembre 2026**  
+**Projet : NEXUS OS**  
+**Entreprise : NEXUS Premium Solutions**  
+**Nature du projet : plateforme interne d'ingénierie commerciale, d'acquisition, de prospection et de pilotage des activités.**
+
+---
+
+# 1. TON RÔLE ET TA MISSION
+
+Tu interviens comme une équipe technique senior réunissant les compétences suivantes :
+
+- Architecte logiciel full-stack.
+- Architecte de bases de données PostgreSQL et Supabase.
+- Expert React, TypeScript et interfaces professionnelles.
+- Expert sécurité applicative et protection des données.
+- Ingénieur intégration Microsoft Graph et Outlook.
+- Ingénieur IA spécialisé dans l'intégration de Gemini.
+- Expert UX/UI spécialisé dans les outils commerciaux et les logiciels de productivité.
+- Ingénieur qualité, tests, migration et déploiement.
+
+Ta mission est de **reconstruire intégralement NEXUS OS**, en partant du code existant et de son fonctionnement réel, pour aboutir à une plateforme professionnelle, évolutive, sécurisée, fiable et adaptée à l'activité opérationnelle de NEXUS Premium Solutions.
+
+Il ne s'agit pas d'un simple CRM.
+
+Il ne s'agit pas d'une simple application de phoning.
+
+Il ne s'agit pas d'un outil de scraping.
+
+**NEXUS OS est le système central de pilotage de l'activité commerciale et opérationnelle de NEXUS Premium Solutions.**
+
+Il doit permettre de rechercher des opportunités, organiser leur qualification, gérer les prospects, conduire les actions commerciales, planifier les interventions et mesurer les résultats.
+
+Tu dois raisonner en termes de processus métier complets, et non de fonctionnalités isolées.
+
+---
+
+# 2. RÈGLES ABSOLUES DU PROJET
+
+Ces règles sont prioritaires sur toute proposition technique ou esthétique.
+
+## 2.1 Reconstruction complète
+
+La décision est prise : le projet doit faire l'objet d'une reconstruction complète.
+
+L'architecture actuelle ne doit pas être conservée par simple facilité.
+
+Tu dois :
+
+1. Analyser le dépôt GitHub dans son intégralité.
+2. Comprendre les fonctionnalités réellement présentes.
+3. Identifier les fonctionnalités fonctionnelles, incomplètes, simulées ou défectueuses.
+4. Identifier les éléments réutilisables.
+5. Concevoir une architecture cible cohérente.
+6. Reconstruire progressivement l'application.
+7. Migrer les données utiles vers la nouvelle architecture.
+8. Vérifier chaque fonctionnalité avant sa validation.
+
+Ne détruis jamais une fonctionnalité existante sans avoir identifié son rôle métier et déterminé ce qui doit la remplacer.
+
+Ne supprime aucune donnée existante sans sauvegarde et validation explicite.
+
+## 2.2 Source de vérité
+
+La nouvelle base de données sera **Supabase**.
+
+Firebase et Firestore ne doivent plus constituer le système de stockage opérationnel de la nouvelle application.
+
+Supabase sera utilisé pour :
+
+- PostgreSQL.
+- Authentification.
+- Gestion des utilisateurs.
+- Gestion des autorisations.
+- Stockage documentaire et médias.
+- Fonctions Edge.
+- Gestion des données métier.
+- Événements et traitements nécessaires.
+- Requêtes et statistiques.
+- Temps réel lorsque cela apporte une réelle valeur.
+
+Le frontend ne doit jamais devenir la source de vérité des données métier.
+
+Les données persistantes doivent être enregistrées dans Supabase, et non uniquement dans le navigateur ou dans un état React.
+
+## 2.3 Outlook
+
+L'application doit intégrer les deux dimensions de Microsoft Outlook :
+
+- Gestion des emails.
+- Gestion du calendrier.
+
+L'intégration doit être réelle, sécurisée et bidirectionnelle lorsque les API et autorisations le permettent.
+
+Aucune fausse connexion, donnée simulée ou synchronisation fictive ne doit être présentée comme opérationnelle.
+
+## 2.4 Intelligence artificielle
+
+Gemini est un moteur d'assistance et de traitement.
+
+Il ne doit jamais inventer :
+
+- Une entreprise.
+- Un contact.
+- Un numéro de téléphone.
+- Une adresse email.
+- Une adresse postale.
+- Une activité.
+- Une information commerciale.
+- Une interaction.
+- Un résultat de prospection.
+
+Toute information issue de l'IA doit être identifiable comme telle et accompagnée de sa provenance lorsque cela est possible.
+
+## 2.5 Vérité technique
+
+Ne prétends jamais qu'une fonctionnalité est terminée si elle n'a pas été implémentée et testée.
+
+Ne crée pas de boutons décoratifs sans action réelle.
+
+Ne simule pas une connexion API.
+
+Ne remplace pas une fonctionnalité complexe par une simple maquette.
+
+Ne masque pas les erreurs.
+
+Ne contourne pas les problèmes par des données fictives.
+
+En cas d'impossibilité technique, explique précisément le problème et propose une solution réaliste.
+
+---
+
+# 3. AUDIT OBLIGATOIRE DU PROJET EXISTANT
+
+Avant toute modification importante, analyse le dépôt GitHub :
+
+https://github.com/taylorisgroup-dev/Nexus-OS
+
+Branche principale : `main`.
+
+Le projet existant utilise notamment les technologies suivantes, selon l'audit fourni :
+
+- React 19.
+- TypeScript.
+- Vite.
+- Tailwind CSS 4.
+- Express.
+- Firebase Authentication.
+- Firestore.
+- Gemini via `@google/genai`.
+- Zustand et/ou des mécanismes de gestion d'état React.
+- Plusieurs composants de prospection et de pilotage commercial.
+
+Ces informations constituent un point de départ à vérifier dans le code réellement présent.
+
+## 3.1 Fichiers et zones à examiner
+
+Porte une attention particulière à :
+
+- `server.ts`
+- `firestore.rules`
+- `src/App.tsx`
+- `src/types/`
+- `src/context/DataContext.tsx`
+- `src/components/phoning/`
+- `src/components/ProspectsView.tsx`
+- `src/components/CampaignsView.tsx`
+- `src/components/CockpitView.tsx`
+- `src/components/ConfiguratorView.tsx`
+- Les composants d'enrichissement.
+- Les services Gemini.
+- Les fonctions de scraping.
+- Les connexions et configurations Firebase.
+- Les éventuels stores Zustand.
+
+## 3.2 Points d'audit prioritaires
+
+Vérifie notamment les constats suivants :
+
+**Sécurité backend**
+- Vérification réelle des tokens d'authentification sur toutes les routes API.
+- Contrôle des droits de l'utilisateur côté serveur.
+- Protection contre les appels non autorisés.
+- Limitation des requêtes et protection des quotas Gemini.
+- Validation des paramètres entrants.
+- Protection contre les injections et les entrées malveillantes.
+
+**Base de données**
+- Campagnes stockées dans un document unique.
+- Requêtes N+1.
+- Absence de pagination.
+- Relations entre prospects, interactions et campagnes.
+- Qualité des règles de sécurité Firestore.
+
+**Architecture frontend**
+- Monolithes de composants.
+- Contextes trop globaux.
+- Re-renders inutiles.
+- Logique métier mélangée à l'affichage.
+- Gestion des erreurs et des chargements.
+
+**Expérience utilisateur**
+- Nombre de clics nécessaires pendant un appel.
+- Lisibilité des informations.
+- Rapidité d'accès aux actions.
+- Ergonomie du poste de phoning.
+- Cohérence entre les écrans.
+- Navigation et hiérarchie des informations.
+
+Ne reprends pas aveuglément les recommandations de l'audit. Vérifie leur pertinence au regard de la nouvelle architecture Supabase.
+
+---
+
+# 4. ARCHITECTURE TECHNIQUE CIBLE
+
+## 4.1 Frontend
+
+Architecture recommandée :
+
+- React.
+- TypeScript strict.
+- Vite.
+- Tailwind CSS.
+- Composants réutilisables.
+- Gestion d'état structurée.
+- Séparation claire entre interface, logique métier et accès aux données.
+
+Le code doit être organisé par domaines fonctionnels.
+
+Exemple d'organisation cible :
+
+```text
+src/
+├── app/
+│   ├── routes/
+│   ├── providers/
+│   └── layouts/
+├── components/
+│   ├── ui/
+│   ├── navigation/
+│   └── shared/
+├── modules/
+│   ├── dashboard/
+│   ├── nexus-data/
+│   ├── crm/
+│   ├── campaigns/
+│   ├── phoning/
+│   ├── field-prospecting/
+│   ├── email-prospecting/
+│   ├── outlook/
+│   ├── planning/
+│   ├── tasks/
+│   ├── reporting/
+│   └── settings/
+├── services/
+│   ├── supabase/
+│   ├── microsoft/
+│   ├── gemini/
+│   └── acquisition/
+├── hooks/
+├── types/
+├── utils/
+└── styles/
+```
+
+Cette organisation est indicative. Tu peux l'améliorer si une architecture plus adaptée est justifiée.
+
+## 4.2 Backend
+
+Utiliser les capacités serveur de Supabase et des fonctions backend adaptées.
+
+Répartition :
+
+- Supabase PostgreSQL : données métier.
+- Supabase Auth : identité et sessions.
+- RLS : autorisations au niveau des données.
+- Supabase Storage : documents et fichiers.
+- Edge Functions : opérations sensibles et intégrations externes.
+- Traitements planifiés : automatisations internes.
+- Microsoft Graph : Outlook.
+- Gemini : analyse, extraction et qualification.
+
+Les clés secrètes doivent rester côté serveur.
+
+Aucune clé privée Gemini, Microsoft ou Supabase ne doit être exposée dans le bundle frontend ou dans GitHub.
+
+## 4.3 Automatisations
+
+Privilégier une architecture interne aux services NEXUS.
+
+Ne pas rendre Make ou n8n indispensables au fonctionnement de NEXUS OS.
+
+Les traitements doivent disposer de :
+
+- Déclencheurs.
+- Statuts.
+- Journaux d'exécution.
+- Gestion des erreurs.
+- Tentatives contrôlées.
+- Délais et limites.
+- Possibilité de reprise.
+- Possibilité d'annulation lorsque c'est pertinent.
+
+Une automatisation ne doit jamais être présentée comme permanente ou illimitée si elle dépend de quotas, de coûts ou de limites d'hébergement.
+
+---
+
+# 5. ORGANISATION FONCTIONNELLE DE NEXUS OS
+
+L'application doit être organisée autour de modules clairement identifiés.
+
+## MODULE 1 — COCKPIT
+
+Le cockpit est le centre de pilotage quotidien.
+
+Il doit donner une vision immédiate de l'activité.
+
+Informations à afficher :
+
+- Prospects à traiter.
+- Appels à effectuer.
+- Appels réalisés.
+- Visites à effectuer.
+- Emails à envoyer.
+- Relances en retard.
+- Relances du jour.
+- Rendez-vous programmés.
+- Opportunités en cours.
+- Prospects qualifiés.
+- Prospects convertis.
+- Activité par canal.
+- Résultats des campagnes.
+- Progression des objectifs.
+
+Prévoir une vue quotidienne, hebdomadaire et mensuelle.
+
+Les indicateurs doivent provenir des données réellement enregistrées.
+
+Prévoir des raccourcis vers les actions prioritaires.
+
+Le cockpit doit répondre rapidement à cette question :
+
+**Que dois-je faire aujourd'hui, et quelle est la prochaine action commerciale la plus pertinente ?**
+
+## MODULE 2 — NEXUS DATA
+
+NEXUS DATA est le centre de collecte, de préparation et de qualification des données.
+
+C'est un module distinct du CRM.
+
+Une entreprise trouvée sur Internet ne doit pas devenir automatiquement un prospect commercial actif.
+
+### 2.1 Recherche de données
+
+Permettre de rechercher des entreprises selon :
+
+- Secteur d'activité.
+- Activité.
+- Profession.
+- Sous-profession.
+- Localisation.
+- Région.
+- Département.
+- Ville.
+- Code postal.
+- Périmètre géographique.
+- Critères complémentaires disponibles.
+
+L'utilisateur doit pouvoir combiner plusieurs critères.
+
+Exemples :
+
+- Tous les restaurants d'une ville.
+- Uniquement les pizzerias d'un département.
+- Les salons de coiffure d'une zone géographique.
+- Les entreprises d'un secteur précis.
+- Une recherche large sur plusieurs départements.
+
+### 2.2 Référentiel des activités
+
+Construire un référentiel hiérarchique, consultable et évolutif.
+
+Il doit permettre de naviguer entre :
+
+- Domaine.
+- Secteur.
+- Activité.
+- Profession.
+- Sous-profession.
+- Spécialité.
+
+Prévoir une base de classification initiale fondée sur des référentiels officiels pertinents, notamment NAF/APE et, lorsque nécessaire, ROME.
+
+Les correspondances entre classifications doivent être explicites.
+
+Ne prétends pas qu'une correspondance est officielle si elle ne l'est pas.
+
+L'utilisateur doit pouvoir :
+
+- Rechercher une activité.
+- Sélectionner plusieurs activités.
+- Sélectionner une catégorie entière.
+- Créer une catégorie interne.
+- Modifier les libellés internes.
+- Ajouter des spécialités.
+- Désactiver une catégorie sans supprimer l'historique.
+
+### 2.3 Sources de collecte
+
+Prévoir une architecture permettant de connecter des sources de données autorisées et documentées.
+
+Sources à étudier selon leurs conditions d'utilisation :
+
+- API SIRENE et données INSEE.
+- Annuaire des entreprises.
+- Sources professionnelles disposant d'API autorisées.
+- Sites officiels des entreprises.
+- Google Places via les interfaces et conditions autorisées.
+- OpenStreetMap et Overpass dans le respect de leurs politiques d'utilisation.
+
+Le système doit respecter les conditions d'utilisation des fournisseurs.
+
+Ne contourne pas les protections techniques, les restrictions d'accès ou les limitations contractuelles.
+
+### 2.4 Collecte et suivi
+
+Lors du lancement d'une recherche, permettre de définir :
+
+- Les critères de recherche.
+- La zone géographique.
+- Le volume cible.
+- Le nombre maximum de résultats.
+- Le mode de collecte.
+- Les sources utilisées.
+- Le niveau de qualification souhaité.
+
+Prévoir les statuts :
+
+- En attente.
+- En cours.
+- En pause.
+- Terminée.
+- Partiellement terminée.
+- En erreur.
+- Annulée.
+
+L'utilisateur doit pouvoir mettre en pause, reprendre ou arrêter une collecte.
+
+Le système peut continuer à rechercher jusqu'à atteindre un objectif défini, mais ne doit jamais promettre une quantité illimitée de résultats.
+
+Afficher :
+
+- Nombre d'entreprises trouvées.
+- Nombre de doublons.
+- Nombre de données incomplètes.
+- Nombre de données vérifiées.
+- Nombre d'erreurs.
+- Progression de la collecte.
+- Sources consultées.
+
+### 2.5 Qualification des données
+
+Chaque donnée doit disposer d'une provenance et d'un niveau de fiabilité.
+
+Prévoir notamment :
+
+- Source.
+- Date de collecte.
+- Date de dernière vérification.
+- Statut de vérification.
+- Niveau de confiance.
+- Informations manquantes.
+- Historique des modifications.
+- Éventuelles contradictions entre sources.
+
+Ne jamais remplacer silencieusement une information existante par une information contradictoire.
+
+Les données incertaines doivent être identifiées comme telles.
+
+### 2.6 Déduplication
+
+Détecter les doublons en s'appuyant notamment sur :
+
+- SIREN.
+- SIRET.
+- Nom de l'entreprise.
+- Adresse.
+- Téléphone.
+- Site Internet.
+- Email.
+
+Prévoir une comparaison et une fusion contrôlée.
+
+Ne pas fusionner automatiquement deux entreprises simplement parce qu'elles ont des noms similaires.
+
+### 2.7 Envoi vers le CRM
+
+L'utilisateur doit pouvoir sélectionner :
+
+- Une seule entreprise.
+- Plusieurs entreprises.
+- Un ensemble de résultats.
+- Une sélection filtrée.
+
+Puis déclencher une action de qualification ou d'intégration CRM.
+
+La validation doit rester contrôlée.
+
+Une entreprise intégrée doit conserver sa provenance NEXUS DATA.
+
+---
+
+# 6. MODULE CRM — GESTION COMMERCIALE CENTRALE
+
+Le CRM constitue la mémoire commerciale de NEXUS OS.
+
+Il doit permettre de gérer :
+
+- Entreprises.
+- Contacts.
+- Prospects.
+- Opportunités.
+- Interactions.
+- Rendez-vous.
+- Relances.
+- Historique commercial.
+- Documents associés.
+- Notes.
+- Tâches.
+
+## 6.1 Fiche entreprise
+
+Chaque entreprise doit posséder une fiche structurée.
+
+Informations possibles :
+
+- Nom commercial.
+- Raison sociale.
+- SIREN.
+- SIRET.
+- Adresse.
+- Code postal.
+- Ville.
+- Département.
+- Région.
+- Secteur.
+- Activité.
+- Site Internet.
+- Téléphone.
+- Email général.
+- Source d'origine.
+- Date d'entrée dans le CRM.
+- Statut commercial.
+- Responsable.
+- Notes.
+
+Ne pas rendre obligatoires des informations qui ne sont pas disponibles.
+
+## 6.2 Fiche contact
+
+Permettre de gérer plusieurs contacts associés à une même entreprise.
+
+Informations :
+
+- Nom.
+- Prénom.
+- Fonction.
+- Téléphone.
+- Email.
+- Moyen de contact préféré.
+- Rôle dans la décision.
+- Notes.
+- Historique des échanges.
+
+## 6.3 Cycle commercial
+
+Prévoir des étapes configurables.
+
+Exemple initial :
+
+1. Nouveau.
+2. À qualifier.
+3. Premier contact effectué.
+4. Intérêt identifié.
+5. Rendez-vous à programmer.
+6. Rendez-vous programmé.
+7. Proposition en cours.
+8. Proposition envoyée.
+9. Négociation.
+10. Gagné.
+11. Perdu.
+12. À recontacter ultérieurement.
+
+L'utilisateur doit pouvoir personnaliser les étapes.
+
+Chaque changement doit être historisé.
+
+## 6.4 Historique des interactions
+
+Centraliser les interactions :
+
+- Appels.
+- Emails.
+- Visites.
+- Rendez-vous.
+- Notes.
+- Relances.
+- Événements commerciaux.
+
+Chaque interaction doit comporter une date, un type, un statut et les informations disponibles.
+
+---
+
+# 7. MODULE CAMPAGNES COMMERCIALES
+
+Les campagnes doivent être le point de départ des opérations de prospection.
+
+Une campagne doit pouvoir être construite à partir de critères précis.
+
+### Configuration
+
+- Nom de campagne.
+- Objectif.
+- Canal.
+- Secteur.
+- Activités ciblées.
+- Professions.
+- Sous-professions.
+- Zone géographique.
+- Volume cible.
+- Date de début.
+- Date de fin éventuelle.
+- Priorité.
+- Statut.
+- Notes.
+
+### Canaux
+
+Une campagne peut concerner :
+
+- Téléphone.
+- Terrain.
+- Email.
+- Plusieurs canaux combinés.
+
+### Suivi
+
+Afficher :
+
+- Volume ciblé.
+- Volume collecté.
+- Volume qualifié.
+- Volume intégré au CRM.
+- Volume contacté.
+- Résultats.
+- Taux de transformation.
+- Rendez-vous obtenus.
+- Opportunités créées.
+
+Les statistiques doivent être calculées à partir des événements réellement enregistrés.
+
+---
+
+# 8. MODULE PHONING — POSTE DE PROSPECTION TÉLÉPHONIQUE
+
+Le poste de phoning doit devenir un outil de travail particulièrement ergonomique.
+
+L'utilisateur doit pouvoir effectuer un appel, consulter les informations et enregistrer son résultat sans perdre de temps.
+
+## 8.1 Interface d'appel
+
+Prévoir une interface organisée autour de :
+
+- Prospect en cours.
+- Entreprise.
+- Nom du contact.
+- Numéro de téléphone.
+- Fonction.
+- Secteur d'activité.
+- Informations utiles.
+- Historique des interactions.
+- Notes précédentes.
+- Script commercial associé.
+- Actions rapides.
+- Résultat d'appel.
+
+Le numéro doit être immédiatement accessible.
+
+Prévoir une action permettant de déclencher un lien téléphonique `tel:` lorsque l'environnement le permet.
+
+Ne prétends pas qu'un appel est automatiquement lancé ou enregistré si le système téléphonique ne fournit pas cette capacité.
+
+## 8.2 File d'appels
+
+Permettre :
+
+- La création d'une file.
+- La sélection des prospects.
+- Le tri par priorité.
+- Le filtrage.
+- Le passage au prospect suivant.
+- La mise en attente.
+- Le report.
+- La suppression d'une entrée de file sans supprimer le prospect.
+
+## 8.3 Résultats d'appel
+
+Prévoir des résultats rapides et configurables :
+
+- Pas de réponse.
+- Occupé.
+- Mauvais numéro.
+- Standard.
+- Interlocuteur indisponible.
+- Refus.
+- À rappeler.
+- Intérêt identifié.
+- Rendez-vous obtenu.
+- Ne plus contacter.
+
+Permettre d'ajouter :
+
+- Commentaire.
+- Motif.
+- Date de rappel.
+- Priorité.
+- Prochaine action.
+
+L'enregistrement d'un résultat doit mettre à jour l'historique commercial et les tâches correspondantes.
+
+## 8.4 Scripts commerciaux
+
+Créer une bibliothèque de scripts et d'argumentaires.
+
+Organisation par :
+
+- Secteur.
+- Profession.
+- Type d'entreprise.
+- Offre.
+- Situation commerciale.
+- Objectif de l'appel.
+
+L'utilisateur doit pouvoir écrire, modifier, dupliquer et organiser ses propres scripts.
+
+**Règle importante : Gemini ne doit pas générer automatiquement des arguments ou objections pendant les appels.**
+
+Le contenu affiché doit provenir de la bibliothèque commerciale validée par l'utilisateur.
+
+## 8.5 Objections
+
+Prévoir une bibliothèque d'objections :
+
+- Prix.
+- Pas intéressé.
+- Déjà équipé.
+- Pas le moment.
+- Envoyer un email.
+- Décisionnaire absent.
+- Besoin de réfléchir.
+- Autres objections personnalisables.
+
+Chaque objection peut être associée à une réponse préparée et validée.
+
+## 8.6 Ergonomie
+
+Le poste de phoning doit être utilisable pendant une conversation téléphonique.
+
+Éviter les modales inutiles.
+
+Limiter les clics.
+
+Privilégier les actions rapides.
+
+Les informations importantes doivent être visibles sans navigation excessive.
+
+Le résultat d'un appel doit pouvoir être enregistré rapidement.
+
+---
+
+# 9. MODULE PROSPECTION TERRAIN
+
+Créer un véritable espace de prospection physique.
+
+Objectif : organiser les déplacements, les visites commerciales et les résultats terrain.
+
+Fonctionnalités :
+
+- Sélection des entreprises à visiter.
+- Création d'une tournée.
+- Classement des visites.
+- Organisation géographique.
+- Fiche entreprise accessible rapidement.
+- Statut de visite.
+- Compte rendu.
+- Photos ou documents si nécessaire.
+- Résultat de la visite.
+- Relance programmée.
+- Rendez-vous ultérieur.
+
+Prévoir l'intégration cartographique à partir de services compatibles et autorisés.
+
+La construction d'itinéraires doit être fiable et ne pas afficher de distances ou temps de trajet inventés.
+
+Statuts possibles :
+
+- À visiter.
+- Visite programmée.
+- Visité.
+- Absent.
+- Fermé.
+- Refus.
+- Intérêt identifié.
+- Rendez-vous obtenu.
+- À revisiter.
+
+Une visite doit être enregistrée dans l'historique du prospect.
+
+---
+
+# 10. MODULE PROSPECTION NUMÉRIQUE ET EMAIL
+
+Ce module doit permettre d'organiser les prises de contact par email.
+
+Il doit s'appuyer sur Outlook lorsqu'un compte Microsoft est connecté.
+
+Fonctionnalités :
+
+- Sélection des prospects.
+- Création de campagnes email.
+- Modèles de messages.
+- Personnalisation.
+- Prévisualisation.
+- Envoi individuel.
+- Envoi par lots dans les limites autorisées.
+- Historique des envois.
+- Statut des messages.
+- Relances.
+- Association des emails aux fiches CRM.
+
+Prévoir une gestion des erreurs d'envoi et des réponses.
+
+Ne jamais considérer un email comme envoyé sans confirmation du service d'envoi.
+
+Ne jamais inventer une adresse email.
+
+Respecter les règles applicables à la prospection électronique, aux oppositions et à la protection des données.
+
+---
+
+# 11. INTÉGRATION MICROSOFT OUTLOOK
+
+L'intégration Outlook constitue un module majeur.
+
+Utiliser Microsoft Graph et OAuth 2.0 avec les autorisations strictement nécessaires.
+
+## 11.1 Connexion
+
+Prévoir :
+
+- Connexion du compte Microsoft.
+- Autorisation explicite.
+- Gestion des jetons côté serveur.
+- Renouvellement sécurisé lorsque possible.
+- Déconnexion.
+- Gestion des autorisations révoquées.
+- Gestion des erreurs.
+
+Ne jamais enregistrer les jetons OAuth dans le frontend ou dans le dépôt GitHub.
+
+## 11.2 Emails
+
+Prévoir :
+
+- Consultation des emails selon les permissions accordées.
+- Consultation des dossiers pertinents.
+- Envoi d'emails.
+- Réponse.
+- Association à une entreprise.
+- Association à un contact.
+- Historique des échanges.
+- Recherche.
+- Modèles commerciaux.
+
+## 11.3 Calendrier
+
+Prévoir :
+
+- Consultation des événements.
+- Création de rendez-vous.
+- Modification.
+- Annulation.
+- Synchronisation des événements.
+- Association à un prospect.
+- Association à une entreprise.
+- Ajout de commentaires.
+- Rappels.
+
+Lorsqu'un rendez-vous commercial est créé depuis NEXUS OS, il doit pouvoir être ajouté au calendrier Outlook.
+
+Gérer les conflits de synchronisation et les modifications effectuées directement dans Outlook.
+
+Ne pas créer de doublons lors des synchronisations.
+
+Prévoir une stratégie d'identification des événements externes.
+
+---
+
+# 12. PLANIFICATION ET GESTION DES RELANCES
+
+Créer un module de planification commerciale.
+
+L'utilisateur doit pouvoir planifier :
+
+- Sessions de phoning.
+- Sessions de prospection terrain.
+- Campagnes email.
+- Rendez-vous.
+- Relances.
+- Tâches commerciales.
+
+Prévoir des vues :
+
+- Journalière.
+- Hebdomadaire.
+- Mensuelle.
+- Calendrier.
+- Liste des actions à effectuer.
+
+## 12.1 Capacité de travail
+
+Permettre de définir :
+
+- Nombre maximal d'appels par session.
+- Durée d'une session.
+- Créneaux disponibles.
+- Nombre de visites possibles.
+- Capacité quotidienne.
+- Priorités.
+
+## 12.2 Attribution des relances
+
+Lorsqu'un prospect doit être rappelé :
+
+- Créer une tâche.
+- Définir une échéance.
+- Associer le prospect.
+- Déterminer la priorité.
+- Afficher la relance dans le cockpit.
+- Proposer une planification cohérente.
+
+Ne jamais supprimer une relance sans conserver une trace de son traitement.
+
+---
+
+# 13. GEMINI — ASSISTANCE INTELLIGENTE
+
+Gemini doit intervenir sur les tâches où l'intelligence artificielle apporte une réelle valeur.
+
+Utilisations possibles :
+
+- Extraction d'informations depuis des pages web autorisées.
+- Structuration de données.
+- Résumé d'une fiche entreprise.
+- Analyse d'informations publiques.
+- Détection d'informations manquantes.
+- Proposition de catégories d'activité.
+- Détection de contradictions.
+- Résumé d'un historique commercial.
+- Analyse des résultats d'une campagne.
+- Assistance à la préparation d'un rendez-vous.
+- Aide à la rédaction d'un email à partir d'informations validées.
+
+Chaque traitement doit préciser son objectif et recevoir uniquement les données nécessaires.
+
+## 13.1 Fiabilité
+
+Gemini doit distinguer :
+
+- Informations vérifiées.
+- Informations extraites.
+- Informations supposées.
+- Informations manquantes.
+- Informations contradictoires.
+
+Il ne doit jamais transformer une supposition en fait établi.
+
+## 13.2 Maîtrise des coûts
+
+Prévoir :
+
+- Limitation des appels.
+- Contrôle des volumes.
+- Suivi de consommation.
+- Gestion des erreurs 429 et 503.
+- Stratégies de reprise.
+- Cache lorsque pertinent.
+- Modèles adaptés au coût et à la complexité.
+
+Aucune boucle d'appel IA incontrôlée ne doit être possible.
+
+---
+
+# 14. MODÈLE DE DONNÉES SUPABASE
+
+Concevoir un schéma PostgreSQL cohérent, normalisé et évolutif.
+
+Les noms ci-dessous sont des propositions de départ, à adapter après analyse des données existantes.
+
+## 14.1 Utilisateurs et configuration
+
+- profiles
+- roles
+- user_preferences
+- app_settings
+
+## 14.2 Référentiels
+
+- activity_domains
+- activity_sectors
+- professions
+- sub_professions
+- activity_classifications
+
+## 14.3 Acquisition
+
+- collection_sources
+- collection_jobs
+- collection_job_events
+- data_leads
+- data_lead_sources
+- data_quality_checks
+- data_lead_history
+- data_deduplication_matches
+
+## 14.4 CRM
+
+- companies
+- contacts
+- prospects
+- prospect_sources
+- prospect_status_history
+- interactions
+- opportunities
+
+## 14.5 Campagnes
+
+- campaigns
+- campaign_targets
+- campaign_prospects
+- campaign_events
+- campaign_statistics
+
+## 14.6 Prospection
+
+- prospecting_sessions
+- call_queues
+- call_queue_items
+- call_results
+- field_visits
+- field_routes
+- email_campaigns
+- email_templates
+- email_events
+
+## 14.7 Bibliothèque commerciale
+
+- scripts
+- script_versions
+- objections
+- objection_responses
+- argument_templates
+
+## 14.8 Planification
+
+- tasks
+- follow_ups
+- appointments
+- calendar_events
+- reminders
+
+## 14.9 Intégrations
+
+- microsoft_connections
+- microsoft_sync_states
+- microsoft_email_links
+- microsoft_calendar_links
+- integration_logs
+
+## 14.10 Système
+
+- automation_jobs
+- automation_logs
+- audit_logs
+- notifications
+- documents
+
+### Règles de conception
+
+- Utiliser des identifiants stables.
+- Prévoir les clés étrangères.
+- Prévoir les index adaptés.
+- Prévoir les contraintes d'unicité pertinentes.
+- Prévoir les dates de création et de modification.
+- Prévoir les statuts contrôlés.
+- Prévoir les suppressions logiques lorsque nécessaire.
+- Préserver l'historique commercial.
+- Éviter les colonnes JSON pour remplacer abusivement des relations métier.
+- Utiliser JSONB uniquement lorsque cela est justifié.
+
+Ne crée pas toutes les tables sans réfléchir aux relations réelles.
+
+Présente le schéma relationnel avant de générer les migrations définitives.
+
+---
+
+# 15. SÉCURITÉ ET CONFORMITÉ
+
+La sécurité doit être intégrée dès la conception.
+
+## 15.1 Authentification
+
+Utiliser Supabase Auth.
+
+Prévoir initialement un environnement maîtrisé par le compte propriétaire de NEXUS OS.
+
+Prévoir une architecture permettant d'ajouter ultérieurement d'autres utilisateurs et des rôles.
+
+## 15.2 Row Level Security
+
+Activer RLS sur toutes les tables exposées.
+
+Écrire des politiques explicites.
+
+Ne jamais considérer qu'une interface masquée constitue une protection.
+
+Les contrôles sensibles doivent également être effectués côté serveur.
+
+## 15.3 Secrets
+
+Les secrets doivent être stockés dans les variables d'environnement sécurisées ou les secrets du service backend.
+
+Ne jamais committer :
+
+- `.env`
+- Clés privées.
+- Tokens.
+- Mots de passe.
+- Secrets OAuth.
+- Clés de service.
+
+Fournir uniquement un `.env.example` avec des valeurs fictives.
+
+## 15.4 Protection API
+
+Prévoir :
+
+- Authentification réelle.
+- Autorisation.
+- Validation Zod ou équivalent.
+- Rate limiting.
+- Contrôle des tailles de requête.
+- Journalisation.
+- Gestion des erreurs.
+- Protection des quotas.
+- Protection contre les abus.
+
+## 15.5 RGPD et prospection
+
+La collecte et l'utilisation des données doivent respecter les obligations applicables.
+
+Prévoir notamment :
+
+- Traçabilité des sources.
+- Finalités de traitement.
+- Durées de conservation configurables.
+- Gestion des oppositions.
+- Liste d'exclusion.
+- Droit d'accès et de rectification.
+- Suppression ou anonymisation lorsque nécessaire.
+- Contrôle des données personnelles.
+- Journalisation des opérations sensibles.
+
+Les règles de prospection B2B doivent être étudiées selon le canal, le contexte et les données traitées.
+
+Ne pas considérer qu'une donnée accessible publiquement peut être exploitée sans restriction.
+
+---
+
+# 16. IDENTITÉ VISUELLE ET UX/UI
+
+L'application doit conserver l'identité visuelle officielle NEXUS OS.
+
+Éléments à préserver et à examiner dans les assets existants :
+
+- Logo officiel NEXUS.
+- Identité métallique 3D.
+- Univers sombre.
+- Références au titane brossé.
+- Rouge carmin.
+- Bleu néon.
+
+Ne remplace pas arbitrairement le logo officiel.
+
+Ne transforme pas l'application en dashboard générique.
+
+L'interface doit être premium, professionnelle, lisible et fonctionnelle.
+
+## 16.1 Principes UX
+
+- Navigation claire.
+- Hiérarchie visuelle cohérente.
+- Informations importantes immédiatement visibles.
+- Actions rapides.
+- Feedback visuel.
+- États de chargement.
+- États vides explicites.
+- Gestion des erreurs.
+- Confirmation des actions sensibles.
+- Responsive desktop et tablette.
+
+## 16.2 Ergonomie commerciale
+
+La priorité est la productivité réelle.
+
+Le poste de phoning doit être optimisé pour les appels.
+
+Le module terrain doit être optimisé pour les déplacements.
+
+Le module email doit être optimisé pour la préparation et le suivi des contacts.
+
+Le cockpit doit être optimisé pour la prise de décision.
+
+Ne multiplie pas les écrans si une action peut être réalisée directement dans le contexte courant.
+
+---
+
+# 17. MIGRATION DES DONNÉES EXISTANTES
+
+La migration de Firebase vers Supabase doit être contrôlée.
+
+Étapes obligatoires :
+
+1. Inventorier les collections Firestore.
+2. Inventorier les documents.
+3. Identifier les relations.
+4. Identifier les fichiers et médias.
+5. Identifier les paramètres.
+6. Définir les correspondances avec PostgreSQL.
+7. Préparer une sauvegarde.
+8. Préparer les scripts d'import.
+9. Effectuer une migration de test.
+10. Contrôler les volumes.
+11. Vérifier les relations.
+12. Vérifier les données manquantes.
+13. Comparer les résultats.
+14. Valider la migration.
+15. Préparer la bascule.
+
+Ne supprime pas Firebase avant validation complète.
+
+Ne migre pas aveuglément un mauvais modèle de données.
+
+Profite de la migration pour corriger les incohérences identifiées.
+
+Conserver une archive exploitable de l'ancien système.
+
+---
+
+# 18. QUALITÉ, TESTS ET VALIDATION
+
+Chaque module doit être testé avant d'être considéré comme terminé.
+
+Prévoir :
+
+- Tests unitaires.
+- Tests d'intégration.
+- Tests des fonctions serveur.
+- Tests RLS.
+- Tests des permissions.
+- Tests des formulaires.
+- Tests des workflows.
+- Tests de synchronisation Outlook.
+- Tests de migration.
+- Tests de non-régression.
+- Tests de performance.
+
+## 18.1 Parcours critiques
+
+Vérifier au minimum les scénarios suivants :
+
+**Scénario A — Acquisition**
+
+Recherche d'entreprises → collecte → déduplication → qualification → sélection → intégration CRM.
+
+**Scénario B — Phoning**
+
+Sélection d'une campagne → ouverture du poste d'appel → appel → saisie du résultat → création d'une relance → mise à jour du cockpit.
+
+**Scénario C — Terrain**
+
+Sélection des entreprises → création d'une tournée → visite → compte rendu → mise à jour du CRM.
+
+**Scénario D — Email**
+
+Sélection des prospects → préparation du message → validation → envoi Outlook → association de l'email à la fiche CRM.
+
+**Scénario E — Rendez-vous**
+
+Création d'un rendez-vous depuis un prospect → ajout au calendrier Outlook → synchronisation → consultation dans le cockpit.
+
+**Scénario F — Relance**
+
+Création d'une relance → affichage dans le planning → exécution → enregistrement de l'interaction → clôture de la tâche.
+
+Aucun de ces scénarios ne doit être validé sur la seule base d'une interface visuellement correcte.
+
+---
+
+# 19. MÉTHODE DE TRAVAIL ET ORDRE DE RECONSTRUCTION
+
+Tu ne dois pas essayer de reconstruire toute l'application en une seule génération de code.
+
+Procède par phases, avec des résultats vérifiables.
+
+## PHASE 0 — AUDIT ET CARTOGRAPHIE
+
+- Examiner le dépôt.
+- Inventorier les fonctionnalités.
+- Cartographier les données.
+- Identifier les dépendances.
+- Identifier les problèmes.
+- Recenser les assets.
+- Produire un état des lieux.
+
+**Livrable : rapport d'audit et matrice de conservation, remplacement ou suppression.**
+
+Aucune suppression ni migration destructive.
+
+## PHASE 1 — ARCHITECTURE CIBLE
+
+- Définir l'architecture frontend.
+- Définir l'architecture backend.
+- Définir le modèle relationnel.
+- Définir les permissions.
+- Définir les intégrations.
+- Définir les flux métier.
+- Définir les stratégies de migration.
+
+**Livrable : dossier d'architecture technique et fonctionnelle.**
+
+Ne commence pas à générer l'ensemble du code avant validation de cette architecture.
+
+## PHASE 2 — SOCLE TECHNIQUE
+
+- Configuration Supabase.
+- Authentification.
+- RLS.
+- Structure frontend.
+- Services backend.
+- Gestion des erreurs.
+- Journalisation.
+- Design system.
+- Environnements de développement et de production.
+
+**Livrable : socle fonctionnel et sécurisé.**
+
+## PHASE 3 — NEXUS DATA
+
+- Référentiels.
+- Sources.
+- Collectes.
+- Qualification.
+- Déduplication.
+- Historique.
+- Sélection.
+- Import CRM.
+
+**Livrable : pipeline de données opérationnel.**
+
+## PHASE 4 — CRM ET CAMPAGNES
+
+- Entreprises.
+- Contacts.
+- Prospects.
+- Opportunités.
+- Interactions.
+- Campagnes.
+- Statuts.
+- Historique.
+- Recherche et filtres.
+
+**Livrable : système commercial central opérationnel.**
+
+## PHASE 5 — PHONING ET TERRAIN
+
+- Poste d'appel.
+- Files d'appels.
+- Scripts.
+- Objections.
+- Résultats.
+- Relances.
+- Visites.
+- Tournées.
+- Comptes rendus.
+
+**Livrable : outils de prospection opérationnels.**
+
+## PHASE 6 — OUTLOOK ET EMAIL
+
+- OAuth.
+- Microsoft Graph.
+- Emails.
+- Calendrier.
+- Synchronisation.
+- Modèles.
+- Historique.
+- Rendez-vous.
+
+**Livrable : intégration Microsoft fonctionnelle.**
+
+## PHASE 7 — COCKPIT ET AUTOMATISATIONS
+
+- Indicateurs.
+- Planning.
+- Tâches.
+- Relances.
+- Notifications.
+- Automatisations.
+- Reporting.
+
+**Livrable : pilotage commercial centralisé.**
+
+## PHASE 8 — QUALITÉ ET MIGRATION
+
+- Tests.
+- Corrections.
+- Migration.
+- Vérification.
+- Performance.
+- Sécurité.
+- Déploiement.
+
+**Livrable : version prête à être utilisée en production.**
+
+---
+
+# 20. EXIGENCES DE COLLABORATION AVEC LE CRÉATEUR
+
+Le créateur de NEXUS OS pilote les choix métier et valide les orientations structurantes.
+
+Tu dois être autonome dans l'analyse et les propositions techniques, mais tu ne dois pas prendre seul les décisions métier qui modifient le fonctionnement de l'entreprise.
+
+Pour chaque phase :
+
+1. Présente ce que tu as compris.
+2. Présente ce que tu proposes.
+3. Explique les décisions techniques importantes.
+4. Identifie les dépendances.
+5. Signale les informations manquantes.
+6. Présente les risques.
+7. Réalise les développements autorisés.
+8. Exécute les tests.
+9. Présente les résultats réels.
+10. Demande une validation avant de passer à une étape structurante lorsque cela est nécessaire.
+
+Ne repose pas constamment des questions dont la réponse est déjà donnée dans ce prompt.
+
+Si une information technique peut être déterminée par l'analyse du code ou de la documentation, fais cette recherche avant de solliciter le créateur.
+
+Si un accès externe est nécessaire, indique précisément lequel et pourquoi.
+
+Ne demande jamais de transmettre un secret directement dans une conversation ou dans un fichier versionné.
+
+---
+
+# 21. LIVRABLES ATTENDUS
+
+À terme, NEXUS OS doit disposer de :
+
+1. Une architecture technique documentée.
+2. Un schéma de base de données Supabase.
+3. Des migrations SQL versionnées.
+4. Des politiques RLS documentées.
+5. Un frontend modulaire.
+6. Un backend sécurisé.
+7. Un module NEXUS DATA.
+8. Un CRM opérationnel.
+9. Un système de campagnes.
+10. Un poste de phoning.
+11. Un module de prospection terrain.
+12. Un module de prospection email.
+13. Une intégration Outlook.
+14. Un calendrier synchronisé.
+15. Un système de tâches et de relances.
+16. Un cockpit de pilotage.
+17. Un système d'automatisations.
+18. Une documentation d'installation.
+19. Une documentation des variables d'environnement.
+20. Une suite de tests.
+21. Une procédure de migration.
+22. Une procédure de sauvegarde et de restauration.
+
+---
+
+# 22. PREMIÈRE INSTRUCTION À EXÉCUTER
+
+**Ne commence pas par coder.**
+
+Commence par analyser intégralement le dépôt GitHub actuellement synchronisé.
+
+Puis produis un document intitulé :
+
+# NEXUS OS — RAPPORT DE RECONSTRUCTION ET ARCHITECTURE CIBLE
+
+Ce rapport doit comprendre :
+
+1. L'état réel du projet.
+2. Les fonctionnalités existantes.
+3. Les fonctionnalités à conserver.
+4. Les fonctionnalités à reconstruire.
+5. Les fonctionnalités à abandonner et pourquoi.
+6. Les problèmes techniques confirmés.
+7. Les risques de sécurité.
+8. Les limites de l'architecture actuelle.
+9. Le schéma fonctionnel cible.
+10. L'architecture Supabase proposée.
+11. Le modèle de données relationnel.
+12. Le fonctionnement des trois canaux de prospection.
+13. L'intégration Outlook.
+14. Le rôle de Gemini.
+15. Le système d'automatisation.
+16. Le plan de migration.
+17. Le plan de reconstruction par phases.
+18. Les dépendances et accès nécessaires.
+19. Les tests de validation.
+
+Pour chaque recommandation, distingue clairement :
+
+- Ce qui est confirmé par le code.
+- Ce qui est déduit de l'architecture.
+- Ce qui constitue une proposition.
+- Ce qui nécessite une décision du créateur.
+
+À la fin, présente les décisions qui nécessitent réellement mon accord.
+
+**La reconstruction de NEXUS OS commence par une architecture solide, pas par une succession de modifications improvisées.**
+
+---
+
+# OBJECTIF FINAL
+
+Construire un outil professionnel qui centralise toute l'activité d'acquisition et de développement commercial de NEXUS Premium Solutions.
+
+NEXUS OS doit permettre de passer de la recherche d'une entreprise à son intégration dans le CRM, puis à sa prise de contact, son suivi, sa transformation commerciale et son pilotage.
+
+Chaque information doit être traçable.
+
+Chaque action doit avoir un effet réel.
+
+Chaque automatisation doit être contrôlable.
+
+Chaque donnée doit être protégée.
+
+Chaque module doit fonctionner avec les autres.
+
+**NEXUS OS : un seul système, une vision globale, trois canaux de prospection, une activité commerciale maîtrisée.**
