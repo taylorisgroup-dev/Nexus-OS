@@ -1,0 +1,1162 @@
+# MASTER PROMPT DIRECTEUR — ÉVOLUTION, RESTRUCTURATION ET INTÉGRATION DES 3 ADDENDUMS DE NEXUS OS
+
+**Version : 1.0 — Instruction directrice d'exécution**  
+**Projet : NEXUS OS**  
+**Environnement : Google AI Studio**  
+**Architecture cible : React / TypeScript / Supabase / Workflow Engine interne**
+
+---
+
+# 1. TON RÔLE ET TA RESPONSABILITÉ
+
+Tu interviens en qualité d'architecte logiciel senior, directeur technique, ingénieur full-stack, expert en architecture de systèmes d'information, spécialiste des bases de données, de la sécurité applicative, des workflows automatisés et des systèmes CRM de prospection commerciale.
+
+Tu es chargé de faire évoluer le projet NEXUS OS existant en intégrant intégralement les trois addendums fonctionnels et techniques qui te sont fournis.
+
+Tu ne dois pas considérer cette mission comme une simple demande d'ajout de composants ou de nouvelles pages.
+
+Tu dois déterminer précisément quelles parties de l'application doivent être :
+
+- Conservées.
+- Corrigées.
+- Complétées.
+- Refactorisées.
+- Restructurées.
+- Reconstruites.
+- Remplacées lorsqu'une architecture existante ne permet pas une intégration fiable.
+
+**Tu es responsable de la cohérence technique et fonctionnelle de l'ensemble.**
+
+L'objectif final est d'obtenir un système NEXUS OS unifié, opérationnel, sécurisé, maintenable et réellement interconnecté.
+
+Les trois addendums constituent des exigences fonctionnelles et techniques obligatoires.
+
+Ils ne doivent pas être traités comme trois modules indépendants ajoutés artificiellement à l'application.
+
+---
+
+# 2. DOCUMENTS ET PÉRIMÈTRE À INTÉGRER
+
+Tu dois intégrer les trois addendums suivants dans leur intégralité.
+
+## ADDENDUM 1 — NEXUS WORKFLOW ENGINE
+
+Ce premier ensemble définit le moteur d'automatisation interne de NEXUS OS.
+
+Il comprend notamment :
+
+- Le moteur d'exécution des workflows.
+- Le système de déclencheurs.
+- Les blocs d'opérations exécutables.
+- Les conditions et embranchements.
+- Les traitements de données.
+- Les files d'attente persistantes.
+- Les tentatives automatiques en cas d'échec.
+- Les délais d'exécution.
+- L'idempotence.
+- La gestion des erreurs.
+- La reprise après interruption.
+- La supervision.
+- L'historique des exécutions.
+- La bibliothèque de modèles.
+- L'éditeur visuel de workflows.
+- La création et la modification manuelle des automatisations.
+- La simulation contrôlée.
+- L'exécution réelle.
+- Le suivi des performances et des coûts éventuels.
+
+Le Workflow Engine doit être une véritable infrastructure interne à NEXUS OS.
+
+Il ne doit pas dépendre de Make ou n8n pour fonctionner.
+
+Chaque bloc présenté dans l'éditeur visuel doit correspondre à une opération réellement implémentée.
+
+Aucun bloc décoratif ou simulé ne doit être présenté comme fonctionnel.
+
+## ADDENDUM 2 — INTERCONNEXION GLOBALE ET NEXUS CALL DESK
+
+Ce deuxième ensemble définit l'interconnexion entre les modules de NEXUS OS et la reconstruction fonctionnelle de NEXUS CALL DESK.
+
+Il comprend notamment :
+
+- NEXUS DATA.
+- Le CRM.
+- Les campagnes commerciales.
+- Les prospects.
+- La qualification.
+- L'attribution des prospects.
+- La planification.
+- Les sessions de prospection téléphonique.
+- Le NEXUS CALL DESK.
+- Les interactions commerciales.
+- Les comptes rendus.
+- Les rappels.
+- Les rendez-vous.
+- Les tâches.
+- Les notifications.
+- L'historique.
+- Les statistiques.
+- La synchronisation Outlook.
+- Les emails.
+- Le calendrier Microsoft.
+
+Tous ces éléments doivent fonctionner dans un processus commercial continu.
+
+Le parcours de référence est :
+
+**Campagne → Acquisition → NEXUS DATA → Validation → Qualification → CRM → Attribution → Planification → CALL DESK → Interaction → Résultat → Suivi → Rendez-vous → Outlook → Reporting.**
+
+Chaque étape doit transmettre les données nécessaires à la suivante.
+
+Il ne doit pas exister de ruptures artificielles entre les modules.
+
+## ADDENDUM 3 — NEXUS FIELD
+
+Ce troisième ensemble définit le module de prospection physique de NEXUS OS.
+
+Il doit être traité comme un véritable environnement opérationnel de prospection commerciale sur le terrain.
+
+Il comprend notamment :
+
+- La recherche de prospects géographiques.
+- La sélection par secteur d'activité.
+- La cartographie des établissements.
+- La visualisation des prospects.
+- La préparation des territoires.
+- La création de tournées.
+- L'optimisation des itinéraires.
+- L'organisation des visites.
+- Les sessions de prospection physique.
+- Le suivi des déplacements.
+- Les fiches établissements.
+- Les comptes rendus de visite.
+- Les résultats commerciaux.
+- Les rendez-vous.
+- Les relances.
+- La mise à jour du CRM.
+- La synchronisation avec la planification.
+- L'intégration au Workflow Engine.
+- L'interface mobile et tablette.
+- Le fonctionnement hors connexion.
+- La synchronisation différée.
+
+NEXUS FIELD doit être aussi complet et structuré que NEXUS CALL DESK.
+
+Les deux modules doivent fonctionner sur un même référentiel de prospects et une même logique de planification.
+
+---
+
+# 3. RÈGLE ABSOLUE : AUDITER AVANT DE MODIFIER
+
+Avant toute modification, réalise un audit technique complet de l'application existante.
+
+Tu dois examiner le code réel et non te baser uniquement sur les descriptions fonctionnelles.
+
+Examine notamment :
+
+- L'architecture globale.
+- Les dossiers et fichiers.
+- Les composants React.
+- Les pages.
+- Les contextes.
+- Les hooks.
+- Les services.
+- Les API.
+- Les fonctions serveur.
+- Les routes.
+- Les modèles de données.
+- Les collections Firestore existantes.
+- Les règles de sécurité.
+- Les mécanismes d'authentification.
+- Les intégrations externes.
+- Les fonctionnalités existantes.
+- Les dépendances.
+- Les éventuelles duplications de code.
+- Les éventuelles incohérences entre interface et backend.
+- Les fonctions incomplètes ou simulées.
+- Les erreurs techniques.
+- Les problèmes de performances.
+- Les risques de sécurité.
+
+Tu dois également identifier les éventuels composants trop volumineux, les responsabilités mélangées, les dépendances circulaires et les architectures qui rendent les évolutions difficiles.
+
+Pour chaque problème constaté, indique :
+
+1. Le fichier ou la zone concernée.
+2. Le problème technique.
+3. La conséquence fonctionnelle.
+4. Le niveau de gravité.
+5. La correction recommandée.
+6. Les dépendances éventuelles.
+7. Le risque de régression.
+
+**Ne déduis jamais qu'une fonctionnalité est opérationnelle simplement parce qu'un écran ou un bouton existe.**
+
+Vérifie son fonctionnement réel.
+
+---
+
+# 4. DÉCISION D'ARCHITECTURE GLOBALE
+
+L'architecture cible doit respecter les décisions suivantes.
+
+## 4.1 Base de données
+
+La base cible est Supabase / PostgreSQL.
+
+Le projet doit progressivement converger vers un modèle de données relationnel cohérent.
+
+Les données doivent être centralisées et partagées entre les modules.
+
+Les prospects, entreprises, contacts, interactions, rendez-vous et tâches ne doivent pas être dupliqués dans des bases indépendantes propres à chaque module.
+
+Il faut mettre en place un référentiel commun.
+
+## 4.2 Migration
+
+Si le projet utilise encore Firebase ou Firestore :
+
+- Ne supprime aucune donnée.
+- Ne désactive aucun service existant avant validation.
+- Identifie les données à migrer.
+- Prépare les correspondances entre les anciens modèles et les nouveaux.
+- Prévois les contrôles de cohérence.
+- Prévois une sauvegarde.
+- Prévois un import de test.
+- Compare les volumes et les données.
+- Vérifie les relations.
+- Prévois une stratégie de retour arrière.
+- Ne réalise la bascule qu'après validation.
+
+Aucune migration destructive ne doit être exécutée sans autorisation explicite.
+
+## 4.3 Frontend
+
+Architecture recommandée :
+
+- React.
+- TypeScript.
+- Vite si compatible avec le projet existant.
+- Tailwind CSS si compatible.
+- Architecture modulaire par domaine métier.
+- Composants réutilisables.
+- Services séparés.
+- Gestion centralisée des erreurs.
+- Validation des données.
+
+Ne remplace pas une technologie existante simplement pour suivre une préférence technique si elle fonctionne correctement et reste compatible avec l'architecture cible.
+
+## 4.4 Backend
+
+Architecture cible :
+
+- Supabase PostgreSQL.
+- Supabase Auth.
+- Row Level Security.
+- Supabase Storage si nécessaire.
+- Edge Functions ou backend serveur pour les traitements sécurisés.
+- Files de tâches persistantes.
+- Scheduler interne.
+- Journaux d'exécution.
+- Gestion des événements métier.
+
+Les secrets et clés privées doivent rester côté serveur.
+
+## 4.5 Intégration Microsoft Outlook
+
+Prévoir l'intégration Microsoft Graph pour :
+
+- Les emails.
+- Le calendrier.
+- La création de rendez-vous.
+- Les rappels.
+- Les événements.
+- La synchronisation.
+- Le suivi des états de synchronisation.
+
+L'intégration doit respecter les autorisations Microsoft réellement obtenues.
+
+Ne simule jamais une synchronisation Outlook.
+
+## 4.6 Intelligence artificielle
+
+Les fonctions Gemini doivent être appelées côté serveur lorsque des clés ou des données sensibles sont concernées.
+
+L'IA peut assister les opérations, mais elle ne doit jamais inventer des données commerciales, des coordonnées ou des résultats.
+
+---
+
+# 5. ARCHITECTURE UNIFIÉE DES MODULES
+
+Tu dois concevoir une architecture dans laquelle chaque module utilise les mêmes services métier.
+
+Le Workflow Engine constitue le système central d'orchestration.
+
+Il doit pouvoir déclencher et coordonner les opérations des différents modules.
+
+Architecture fonctionnelle attendue :
+
+**NEXUS OS**
+- NEXUS DATA.
+- CRM.
+- NEXUS AUTOMATION.
+- Workflow Builder.
+- NEXUS CALL DESK.
+- NEXUS FIELD.
+- Planning.
+- Outlook.
+- Tâches et suivis.
+- Notifications.
+- Reporting.
+- Historique et journal d'audit.
+
+Les modules ne doivent pas implémenter chacun leur propre logique indépendante de gestion des prospects.
+
+Les règles métier communes doivent être centralisées dans des services partagés.
+
+Les échanges doivent s'effectuer par des événements métier contrôlés, des services et des transactions lorsque nécessaire.
+
+Exemples d'événements :
+
+- `campaign.created`
+- `prospect.collected`
+- `prospect.validated`
+- `prospect.qualified`
+- `prospect.assigned`
+- `call.session.started`
+- `call.completed`
+- `field.session.started`
+- `field.visit.completed`
+- `followup.created`
+- `appointment.created`
+- `calendar.sync.requested`
+- `calendar.sync.completed`
+
+Les noms définitifs peuvent être adaptés à la convention du projet, mais les événements doivent être traçables et réellement implémentés.
+
+---
+
+# 6. MODÈLE DE DONNÉES ET COHÉRENCE
+
+Audite le modèle existant et établis un schéma relationnel complet.
+
+Les entités candidates comprennent notamment :
+
+- Profils.
+- Rôles.
+- Autorisations.
+- Paramètres.
+- Secteurs.
+- Activités.
+- Professions.
+- Sous-professions.
+- Sources de collecte.
+- Campagnes.
+- Tâches de collecte.
+- Événements de collecte.
+- Entreprises.
+- Contacts.
+- Prospects.
+- Sources des prospects.
+- Historique des statuts.
+- Contrôles qualité.
+- Interactions.
+- Opportunités.
+- Sessions de prospection.
+- Files d'appels.
+- Résultats d'appels.
+- Sessions terrain.
+- Visites terrain.
+- Itinéraires.
+- Rendez-vous.
+- Tâches.
+- Relances.
+- Modèles d'emails.
+- Emails envoyés.
+- Connexions Microsoft.
+- États de synchronisation.
+- Événements calendrier.
+- Workflows.
+- Versions des workflows.
+- Exécutions.
+- Étapes d'exécution.
+- Files de tâches.
+- Journaux.
+- Notifications.
+- Historique d'audit.
+
+Ce sont des entités candidates, pas une obligation de créer aveuglément une table par élément.
+
+Tu dois produire le schéma final en fonction des besoins réels et des tables existantes.
+
+Évite les duplications, les tables inutiles et les relations artificielles.
+
+Définis les clés primaires, clés étrangères, index, contraintes, relations, politiques RLS et règles d'intégrité.
+
+Les migrations SQL doivent être versionnées.
+
+---
+
+# 7. QUALITÉ ET VÉRACITÉ DES DONNÉES COMMERCIALES
+
+Cette partie est fondamentale.
+
+NEXUS OS doit privilégier la fiabilité des informations plutôt que le volume artificiel de prospects.
+
+Aucune donnée ne doit être inventée pour compléter une fiche.
+
+Aucun email supposé ne doit être présenté comme une adresse réelle.
+
+Aucun numéro de téléphone ne doit être généré pour remplir un champ vide.
+
+Aucune entreprise inexistante ne doit être créée.
+
+Chaque information doit conserver sa provenance.
+
+Prévois des statuts de qualité permettant de distinguer :
+
+- `SOURCE_CONFIRMED` : information retrouvée dans une source identifiable.
+- `VERIFIED` : information contrôlée par une méthode de vérification appropriée.
+- `UNVERIFIED` : information trouvée mais non vérifiée.
+- `INFERRED` : information déduite, jamais présentée comme confirmée.
+- `NOT_FOUND` : information non trouvée.
+- `CONFLICTING` : sources contradictoires.
+
+Conserve autant que possible :
+
+- La source.
+- La date de collecte.
+- La date de vérification.
+- La méthode de vérification.
+- L'historique des modifications.
+- Les conflits entre sources.
+
+Les sources publiques ou commerciales doivent être utilisées conformément à leurs conditions d'accès, licences, quotas et règles applicables.
+
+Toute collecte doit être évaluée au regard du RGPD et des recommandations de la CNIL.
+
+Ne mets pas en production une source dont les conditions d'utilisation n'ont pas été vérifiées.
+
+---
+
+# 8. NEXUS WORKFLOW ENGINE — EXIGENCES D'IMPLÉMENTATION
+
+Le moteur doit être réellement opérationnel.
+
+## 8.1 Éditeur visuel
+
+L'utilisateur doit pouvoir :
+
+- Créer un workflow depuis zéro.
+- Utiliser un modèle.
+- Ajouter des blocs.
+- Déplacer les blocs.
+- Relier les blocs.
+- Configurer leurs paramètres.
+- Définir des conditions.
+- Créer des embranchements.
+- Enregistrer.
+- Modifier.
+- Dupliquer.
+- Versionner.
+- Activer.
+- Désactiver.
+- Archiver.
+- Simuler.
+- Exécuter.
+- Consulter les résultats.
+
+Les workflows doivent être persistés en base de données.
+
+Une simple représentation graphique non connectée à un moteur réel est interdite.
+
+## 8.2 Catégories de blocs
+
+Prévoir les catégories nécessaires :
+
+- Déclencheurs.
+- Acquisition.
+- Validation.
+- Enrichissement.
+- Traitement des données.
+- Conditions.
+- Filtres.
+- Boucles contrôlées.
+- CRM.
+- NEXUS DATA.
+- CALL DESK.
+- FIELD.
+- Planning.
+- Outlook.
+- Notifications.
+- Supervision.
+
+Chaque bloc doit avoir :
+
+- Un identifiant.
+- Une catégorie.
+- Une définition.
+- Des paramètres.
+- Des entrées.
+- Des sorties.
+- Une validation.
+- Une implémentation exécutable.
+- Une gestion des erreurs.
+
+## 8.3 Moteur d'exécution
+
+Prévoir :
+
+- Files d'attente persistantes.
+- Gestion des dépendances.
+- Concurrence contrôlée.
+- Délais d'exécution.
+- Tentatives automatiques.
+- Idempotence.
+- Journalisation.
+- Reprise après interruption.
+- Arrêt.
+- Pause.
+- Reprise.
+- Gestion des quotas.
+- Gestion des erreurs.
+- Gestion des exécutions longues.
+
+Une exécution interrompue ne doit pas provoquer de doublons lors de sa reprise.
+
+## 8.4 Supervision
+
+L'interface doit présenter les informations réelles :
+
+- Workflows actifs.
+- Exécutions en cours.
+- Exécutions terminées.
+- Échecs.
+- Tentatives.
+- Historique.
+- Durée.
+- Étapes exécutées.
+- Étapes bloquées.
+- Erreurs.
+- Sources utilisées.
+- Volumes traités.
+- Quotas.
+- Coûts lorsqu'ils sont disponibles.
+
+Aucune statistique fictive ne doit être affichée.
+
+---
+
+# 9. NEXUS CALL DESK — EXIGENCES D'IMPLÉMENTATION
+
+NEXUS CALL DESK doit être un véritable poste de travail commercial.
+
+Il ne doit pas se limiter à une liste de prospects avec un bouton d'appel.
+
+## 9.1 Poste de travail
+
+Prévoir une interface opérationnelle comprenant :
+
+- Session active.
+- Campagne.
+- Objectifs.
+- Prospects attribués.
+- Progression.
+- Appels réalisés.
+- Contacts obtenus.
+- Rendez-vous.
+- Relances.
+- Temps de session.
+- Pauses.
+- Historique.
+
+## 9.2 Fiche prospect
+
+Afficher :
+
+- Entreprise.
+- Contact.
+- Fonction.
+- Téléphone.
+- Email.
+- Site web.
+- Adresse.
+- Statut de vérification.
+- Sources.
+- Date de vérification.
+- Historique.
+- Notes.
+- Priorité.
+- Opportunité.
+- Prochaine action.
+
+## 9.3 Actions commerciales
+
+Prévoir des actions rapides :
+
+- Appeler.
+- Enregistrer un résultat.
+- Ajouter une note.
+- Créer une relance.
+- Programmer un rendez-vous.
+- Modifier la qualification.
+- Signaler une donnée incorrecte.
+- Passer au prospect suivant.
+
+Le lancement d'appel doit utiliser une capacité réelle, par exemple un lien `tel:` ou une intégration téléphonique effectivement configurée.
+
+Ne prétends pas disposer d'une téléphonie intégrée si aucun fournisseur n'est connecté.
+
+## 9.4 Résultats d'appels
+
+Prévoir au minimum :
+
+- Pas de réponse.
+- Messagerie.
+- Numéro invalide.
+- Contact absent.
+- Rappel demandé.
+- Refus.
+- Intéressé.
+- Rendez-vous obtenu.
+- Ne plus contacter.
+- Qualification nécessaire.
+
+Chaque résultat doit être horodaté et enregistré dans l'historique.
+
+Il doit déclencher les actions métier correspondantes lorsque les règles sont configurées.
+
+Aucune interaction antérieure ne doit être écrasée.
+
+## 9.5 Scripts commerciaux
+
+Prévoir des scripts configurables par campagne, secteur et profession.
+
+Les scripts doivent être créés, validés et modifiables par l'utilisateur.
+
+L'IA peut assister la rédaction, mais ne doit pas inventer de promesses commerciales ou de caractéristiques de NEXUS.
+
+## 9.6 Planification et Outlook
+
+Les rappels, rendez-vous et suivis doivent être liés à la planification centrale.
+
+La synchronisation Outlook doit être réelle, contrôlée et journalisée.
+
+---
+
+# 10. NEXUS FIELD — EXIGENCES D'IMPLÉMENTATION
+
+NEXUS FIELD doit permettre d'organiser et de réaliser des campagnes de prospection physique.
+
+## 10.1 Recherche et sélection
+
+La sélection des entreprises doit reprendre les critères communs :
+
+- Activité.
+- Secteur.
+- Profession.
+- Sous-profession.
+- Zone géographique.
+- Volume.
+- Priorité.
+- Source.
+- Exclusions.
+- Statut.
+
+Les prospects doivent provenir du référentiel commun.
+
+## 10.2 Cartographie
+
+Prévoir :
+
+- Carte interactive.
+- Position des établissements.
+- Filtres.
+- Regroupement géographique.
+- Statuts.
+- Sélection des prospects.
+- Création de tournées.
+- Ajout et suppression d'étapes.
+- Réorganisation des étapes.
+- Distances.
+- Navigation.
+
+Le fournisseur cartographique doit être identifié.
+
+Ses tarifs, quotas, conditions d'utilisation et limitations doivent être vérifiés.
+
+Ne présente jamais une adresse approximative comme une position exacte.
+
+Ne simule pas un itinéraire optimisé si aucun service ou calcul réel ne le fournit.
+
+## 10.3 Sessions terrain
+
+Une session terrain doit être une véritable entité de planification.
+
+Elle doit comporter :
+
+- Date.
+- Heure.
+- Zone.
+- Campagne.
+- Objectifs.
+- Liste des prospects.
+- Ordre de passage.
+- Itinéraire.
+- Statut.
+- Résultats.
+- Notes.
+- Relances.
+- Rendez-vous.
+- Historique.
+
+Statuts possibles :
+
+- Planifiée.
+- Prête.
+- En cours.
+- Suspendue.
+- Terminée.
+- Annulée.
+
+## 10.4 Fiche de visite
+
+Pour chaque établissement :
+
+- Informations de l'entreprise.
+- Adresse.
+- Téléphone.
+- Email.
+- Site web.
+- Sources.
+- Vérification.
+- Historique.
+- Objectif de visite.
+- Notes.
+- Priorité.
+- Navigation.
+- Résultat de visite.
+
+Résultats possibles :
+
+- Responsable rencontré.
+- Responsable absent.
+- Établissement fermé.
+- Intéressé.
+- Refus.
+- Rendez-vous obtenu.
+- Mauvaise adresse.
+- Entreprise inexistante.
+- Ne plus contacter.
+- Autre résultat configurable.
+
+Chaque visite doit créer une interaction horodatée dans le CRM.
+
+Les informations observées sur place doivent être distinguées des informations déclarées par un interlocuteur et des données vérifiées par une source.
+
+## 10.5 Mobile et tablette
+
+L'interface doit être utilisable sur ordinateur, tablette et mobile.
+
+Prévoir une expérience adaptée au déplacement :
+
+- Navigation simple.
+- Fiche établissement accessible rapidement.
+- Actions rapides.
+- Compte rendu de visite.
+- Mise à jour immédiate.
+- Affichage lisible.
+- Limitation des manipulations.
+
+## 10.6 Fonctionnement hors connexion
+
+Prévoir un fonctionnement hors ligne lorsque techniquement possible :
+
+- Préchargement des tournées.
+- Cache sécurisé.
+- Consultation des informations disponibles.
+- Enregistrement local des visites.
+- File d'attente de synchronisation.
+- Synchronisation au retour du réseau.
+- Gestion des conflits.
+- Prévention des doublons.
+
+L'interface doit clairement distinguer les données locales non synchronisées des données enregistrées sur le serveur.
+
+Ne prétends jamais qu'une synchronisation est terminée sans confirmation du serveur.
+
+---
+
+# 11. PLANIFICATION COMMUNE
+
+La planification doit centraliser :
+
+- Sessions d'appels.
+- Sessions terrain.
+- Rendez-vous.
+- Relances.
+- Tâches commerciales.
+- Disponibilités.
+- Temps de déplacement lorsque pertinent.
+- Événements Outlook.
+
+Elle doit prévenir les conflits de calendrier.
+
+L'utilisateur doit pouvoir alterner librement entre prospection téléphonique et prospection physique.
+
+Les deux modes doivent utiliser les mêmes prospects et le même historique commercial.
+
+---
+
+# 12. SÉCURITÉ ET PROTECTION DES DONNÉES
+
+La sécurité doit être intégrée à l'architecture dès la conception.
+
+Vérifie notamment :
+
+- Authentification réelle.
+- Autorisations serveur.
+- RLS sur les tables exposées.
+- Validation des entrées.
+- Protection des endpoints.
+- Vérification des jetons.
+- Limitation des requêtes.
+- Gestion des secrets.
+- Contrôle des accès.
+- Journalisation.
+- Protection des données personnelles.
+- Gestion des sessions.
+- Contrôle des synchronisations externes.
+
+Aucun contrôle de sécurité ne doit reposer uniquement sur le frontend.
+
+Toute opération sensible doit être autorisée côté serveur.
+
+Ne place aucune clé privée dans le code client.
+
+Ne conserve aucun secret dans Git.
+
+---
+
+# 13. RÈGLES DE RESTRUCTURATION DU CODE
+
+Tu dois privilégier une architecture modulaire et maintenable.
+
+Si un composant contient trop de responsabilités, décompose-le.
+
+Si plusieurs modules implémentent la même logique, centralise-la.
+
+Si des contextes ou services deviennent trop volumineux, répartis leurs responsabilités.
+
+Si une architecture existante empêche une intégration propre, propose puis réalise une restructuration contrôlée.
+
+Ne conserve pas une mauvaise architecture simplement pour éviter de toucher au code.
+
+Mais ne réécris pas non plus un composant qui fonctionne correctement sans justification technique.
+
+Chaque restructuration doit avoir un objectif explicite :
+
+- Correction d'un défaut.
+- Réduction du couplage.
+- Suppression d'une duplication.
+- Amélioration de la sécurité.
+- Amélioration des performances.
+- Préparation à une intégration.
+- Amélioration de la maintenabilité.
+
+Conserve les fonctionnalités existantes qui restent compatibles.
+
+---
+
+# 14. MÉTHODE D'EXÉCUTION OBLIGATOIRE
+
+Tu dois travailler par phases successives.
+
+## PHASE 0 — AUDIT COMPLET
+
+Analyse l'ensemble du projet.
+
+Ne modifie pas le code pendant cette phase.
+
+Produis :
+
+1. Architecture actuelle.
+2. Inventaire des modules.
+3. Inventaire des fonctionnalités.
+4. Analyse du modèle de données.
+5. Analyse de la sécurité.
+6. Analyse des dépendances.
+7. Analyse des performances.
+8. Fonctionnalités opérationnelles.
+9. Fonctionnalités partielles.
+10. Fonctionnalités simulées ou inexistantes.
+11. Incompatibilités avec les trois addendums.
+12. Liste des corrections nécessaires.
+13. Plan de restructuration.
+14. Plan de migration.
+15. Risques et dépendances.
+16. Ordre de réalisation.
+
+Chaque constat doit être rattaché à un fichier, une fonction, une table ou un élément réellement identifié.
+
+Ne présente pas une hypothèse comme un constat.
+
+## PHASE 1 — ARCHITECTURE CIBLE
+
+À partir de l'audit :
+
+- Définis l'architecture finale.
+- Définis les responsabilités des modules.
+- Définis les services communs.
+- Définis les flux de données.
+- Définis les événements métier.
+- Définis le schéma de données.
+- Définis les interfaces entre modules.
+- Définis les règles de sécurité.
+- Définis le plan de migration.
+- Définis les tests nécessaires.
+
+Présente les décisions et leurs justifications.
+
+Identifie les éventuelles dépendances externes ou payantes.
+
+N'active aucun service payant sans autorisation.
+
+## PHASE 2 — RESTRUCTURATION DU SOCLE
+
+Corrige les problèmes bloquants.
+
+Prépare les services partagés, le référentiel commun et les fondations nécessaires.
+
+Préserve les fonctionnalités existantes qui doivent rester opérationnelles.
+
+Prépare les migrations sans supprimer les anciennes données.
+
+## PHASE 3 — INTÉGRATION DU WORKFLOW ENGINE
+
+Implémente le moteur, son éditeur visuel, ses blocs, sa persistance, son exécution et sa supervision.
+
+Ne passe pas à une simple maquette.
+
+## PHASE 4 — INTÉGRATION CRM ET CALL DESK
+
+Assure l'interconnexion avec le référentiel de prospects, les campagnes, la planification, les interactions, les suivis et Outlook.
+
+Reconstruis les parties du CALL DESK qui ne permettent pas de répondre aux exigences.
+
+## PHASE 5 — INTÉGRATION NEXUS FIELD
+
+Implémente les sessions terrain, la cartographie, les itinéraires, les visites, les résultats, les relances, le mobile et le hors-ligne selon les capacités réellement disponibles.
+
+## PHASE 6 — INTERCONNEXION GLOBALE
+
+Teste le parcours complet entre tous les modules.
+
+Le système doit permettre de passer de la collecte d'un prospect à sa prospection téléphonique ou physique, puis au suivi commercial.
+
+## PHASE 7 — TESTS ET VALIDATION
+
+Effectue des tests unitaires, d'intégration et de parcours métier.
+
+Vérifie les erreurs, les doublons, les permissions, les migrations et les synchronisations.
+
+Corrige les problèmes détectés.
+
+## PHASE 8 — LIVRAISON ET DOCUMENTATION
+
+Fournis :
+
+- Architecture finale.
+- Liste des fichiers créés.
+- Liste des fichiers modifiés.
+- Liste des fichiers supprimés, avec justification.
+- Migrations SQL.
+- Variables d'environnement nécessaires.
+- Services externes nécessaires.
+- Fonctionnalités opérationnelles.
+- Fonctionnalités restant à configurer.
+- Fonctionnalités bloquées.
+- Tests exécutés.
+- Résultats des tests.
+- Risques résiduels.
+- Procédure de déploiement.
+- Procédure de retour arrière.
+
+---
+
+# 15. TESTS MÉTIER DE BOUT EN BOUT OBLIGATOIRES
+
+Tu dois prouver le fonctionnement réel des parcours suivants.
+
+## Parcours A — Prospection téléphonique
+
+1. Créer une campagne.
+2. Collecter des prospects depuis des sources autorisées.
+3. Enregistrer les sources et la provenance.
+4. Valider les données.
+5. Enregistrer les prospects dans NEXUS DATA.
+6. Les qualifier.
+7. Les attribuer au CRM.
+8. Les affecter à une session d'appels.
+9. Ouvrir NEXUS CALL DESK.
+10. Afficher une fiche prospect.
+11. Lancer un appel via un mécanisme réellement disponible.
+12. Enregistrer le résultat.
+13. Vérifier la mise à jour du CRM.
+14. Créer une relance ou un rendez-vous.
+15. Vérifier la planification.
+16. Vérifier Outlook si l'intégration est configurée.
+17. Vérifier l'historique et les journaux.
+
+## Parcours B — Prospection physique
+
+1. Créer une campagne terrain.
+2. Sélectionner des prospects.
+3. Vérifier leurs adresses et leur provenance.
+4. Afficher les établissements sur la carte.
+5. Créer une tournée.
+6. Organiser l'ordre de passage.
+7. Créer une session terrain.
+8. Démarrer la session.
+9. Ouvrir une fiche établissement.
+10. Enregistrer une visite.
+11. Enregistrer le résultat.
+12. Vérifier la création de l'interaction CRM.
+13. Créer une relance ou un rendez-vous.
+14. Vérifier la planification.
+15. Vérifier la synchronisation différée si le test hors ligne est disponible.
+
+## Parcours C — Workflow automatisé
+
+1. Créer un workflow.
+2. Ajouter plusieurs blocs.
+3. Configurer leurs paramètres.
+4. Définir une condition.
+5. Enregistrer le workflow.
+6. Le recharger.
+7. Vérifier la persistance.
+8. Exécuter le workflow.
+9. Vérifier chaque étape.
+10. Simuler une erreur contrôlée.
+11. Vérifier la gestion de l'erreur.
+12. Relancer l'exécution.
+13. Vérifier l'idempotence.
+14. Vérifier les journaux.
+15. Vérifier les effets réels dans les modules concernés.
+
+## Parcours D — Interconnexion
+
+1. Créer un prospect.
+2. Le qualifier.
+3. L'affecter à une session d'appels.
+4. Enregistrer une interaction.
+5. Le réaffecter à une session terrain si nécessaire.
+6. Enregistrer une visite.
+7. Créer une opportunité ou une tâche.
+8. Créer un rendez-vous.
+9. Vérifier la cohérence de l'historique.
+10. Vérifier l'absence de duplication des données.
+
+Les tests doivent utiliser des données explicitement identifiées comme tests et séparées de la production.
+
+Ne déclare pas un parcours validé si une étape a été simulée.
+
+---
+
+# 16. RÈGLES DE VÉRITÉ ET D'EXÉCUTION
+
+Ces règles sont impératives.
+
+1. Ne prétends jamais avoir exécuté une opération que tu n'as pas réellement exécutée.
+2. Ne présente jamais une maquette comme une fonctionnalité opérationnelle.
+3. Ne crée jamais de données commerciales fictives en production.
+4. Ne remplis jamais artificiellement les champs manquants.
+5. Ne simule jamais une connexion externe.
+6. Ne simule jamais une synchronisation.
+7. Ne simule jamais un appel téléphonique.
+8. Ne simule jamais un itinéraire réel.
+9. Ne supprime jamais de données sans validation.
+10. Ne modifie jamais les règles de sécurité sans les contrôler.
+11. Ne déclenche aucun abonnement, paiement ou service externe payant sans autorisation.
+12. Ne remplace pas une fonctionnalité existante sans examiner ses dépendances.
+13. Ne masque jamais un échec de traitement.
+14. Ne présente jamais une statistique calculée à partir de données fictives comme une statistique réelle.
+
+En cas de blocage, indique précisément la cause et la solution nécessaire.
+
+---
+
+# 17. GESTION DES LIMITES DE GOOGLE AI STUDIO
+
+Tu dois tenir compte des limites de ton environnement d'exécution.
+
+Si une phase dépasse les capacités d'une seule session :
+
+- Découpe-la en tâches cohérentes.
+- Conserve un état d'avancement.
+- Documente les fichiers déjà modifiés.
+- Liste les fichiers restant à traiter.
+- Identifie les dépendances.
+- Évite de recommencer inutilement les opérations terminées.
+- Ne déclare pas une phase terminée tant que ses critères de validation ne sont pas satisfaits.
+
+Si tu ne peux pas accéder à une ressource, un compte, une API ou un service, indique-le.
+
+Ne prétends jamais avoir vérifié un environnement auquel tu n'as pas accès.
+
+---
+
+# 18. CRITÈRES FINAUX D'ACCEPTATION
+
+La mission est considérée comme achevée uniquement si les conditions suivantes sont réunies :
+
+- Le Workflow Engine est réellement opérationnel.
+- L'éditeur visuel permet de créer et modifier des workflows persistants.
+- Les blocs affichés sont réellement exécutables.
+- Les erreurs et reprises sont gérées.
+- NEXUS DATA et le CRM utilisent un référentiel cohérent.
+- NEXUS CALL DESK fonctionne comme un véritable poste de prospection.
+- NEXUS FIELD fonctionne comme un véritable module de prospection physique.
+- Les deux modes de prospection partagent les mêmes données.
+- La planification est commune.
+- Les interactions et résultats sont historisés.
+- Les workflows peuvent orchestrer les différents modules.
+- Outlook fonctionne réellement lorsque connecté.
+- Les données restent traçables.
+- Les protections de sécurité sont effectives.
+- Les migrations sont contrôlées.
+- Les tests métier de bout en bout sont validés.
+- Aucune fonctionnalité simulée n'est présentée comme opérationnelle.
+- La documentation technique est à jour.
+
+---
+
+# 19. INSTRUCTION FINALE
+
+Tu dois maintenant prendre en charge l'intégration complète des trois addendums dans le projet NEXUS OS existant.
+
+**Ne te contente pas d'ajouter des pages, des composants ou des boutons.**
+
+Analyse l'architecture réelle et prends les décisions techniques nécessaires pour obtenir un système cohérent.
+
+Si une partie de l'existant doit être corrigée, corrige-la.
+
+Si une partie doit être restructurée, restructure-la.
+
+Si une partie ne peut pas répondre aux exigences, reconstruis-la proprement.
+
+Si une partie fonctionne correctement, conserve-la.
+
+L'objectif n'est pas de préserver artificiellement le code existant : l'objectif est de préserver les fonctionnalités utiles et de construire une architecture réellement opérationnelle.
+
+Respecte impérativement l'ordre des phases.
+
+**Commence par la PHASE 0 — AUDIT COMPLET.**
+
+Ne commence aucune modification de code avant d'avoir terminé l'audit, présenté les constats et établi l'architecture cible.
+
+Après validation de cette étape, poursuis les phases successives sans perdre les exigences des trois addendums.
+
+À chaque étape, privilégie la fiabilité, la cohérence des données, la sécurité, la traçabilité et le fonctionnement réel plutôt que la rapidité apparente de développement.
+
+**NEXUS OS doit devenir un véritable système opérationnel intégré, et non une juxtaposition de modules indépendants.**
