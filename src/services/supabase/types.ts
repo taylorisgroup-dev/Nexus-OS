@@ -352,3 +352,176 @@ export interface AutomationLogRecord {
   details?: string;
   created_at: string;
 }
+
+// ==============================================================================
+// ADDENDUM 1 : TYPES DU NEXUS WORKFLOW ENGINE
+// ==============================================================================
+
+export type WorkflowCategory = 'acquisition' | 'prospection' | 'qualification' | 'suivi_commercial' | 'reporting' | 'systeme';
+export type WorkflowStatus = 'draft' | 'active' | 'paused' | 'archived';
+export type NodeCategory = 'trigger' | 'acquisition' | 'qualification' | 'call_desk' | 'field' | 'crm' | 'outlook' | 'logic' | 'notification';
+export type ExecutionStatus = 'running' | 'completed' | 'failed' | 'paused' | 'cancelled';
+export type StepStatus = 'pending' | 'running' | 'success' | 'failed' | 'skipped';
+
+export interface WorkflowDefinition {
+  id: string;
+  name: string;
+  description?: string;
+  category: WorkflowCategory;
+  trigger_type: string;
+  status: WorkflowStatus;
+  version: number;
+  is_template: boolean;
+  settings: {
+    max_concurrency: number;
+    retry_limit: number;
+    timeout_seconds: number;
+  };
+  created_by?: string;
+  created_at: string;
+  updated_at: string;
+
+  // Joined
+  nodes?: WorkflowNode[];
+  edges?: WorkflowEdge[];
+}
+
+export interface WorkflowNode {
+  id: string;
+  workflow_id: string;
+  block_type: string;
+  label: string;
+  category: NodeCategory;
+  position_x: number;
+  position_y: number;
+  config: Record<string, any>;
+  inputs: Array<{ id: string; label: string; type: string }>;
+  outputs: Array<{ id: string; label: string; type: string }>;
+  created_at: string;
+}
+
+export interface WorkflowEdge {
+  id: string;
+  workflow_id: string;
+  source_node_id: string;
+  target_node_id: string;
+  source_handle?: string;
+  target_handle?: string;
+  condition_expr?: string;
+  created_at: string;
+}
+
+export interface WorkflowExecution {
+  id: string;
+  workflow_id: string;
+  trigger_event: string;
+  status: ExecutionStatus;
+  trigger_payload: Record<string, any>;
+  execution_context: Record<string, any>;
+  started_at: string;
+  completed_at?: string;
+  duration_ms?: number;
+  error_message?: string;
+  triggered_by?: string;
+
+  // Joined
+  workflow?: WorkflowDefinition;
+  steps?: WorkflowExecutionStep[];
+}
+
+export interface WorkflowExecutionStep {
+  id: string;
+  execution_id: string;
+  node_id: string;
+  block_type: string;
+  status: StepStatus;
+  input_data?: Record<string, any>;
+  output_data?: Record<string, any>;
+  error_log?: string;
+  retry_attempt: number;
+  started_at: string;
+  completed_at?: string;
+  duration_ms?: number;
+}
+
+export interface WorkflowQueueJob {
+  id: string;
+  workflow_id: string;
+  node_id?: string;
+  execution_id: string;
+  status: 'queued' | 'running' | 'completed' | 'failed' | 'dead_letter';
+  payload: Record<string, any>;
+  run_at: string;
+  retry_count: number;
+  max_retries: number;
+  idempotency_key?: string;
+  error_detail?: string;
+  created_at: string;
+}
+
+// ==============================================================================
+// ADDENDUM 2 : CALL DESK & SESSIONS DE PHONING
+// ==============================================================================
+
+export interface CallSession {
+  id: string;
+  campaign_id?: string;
+  user_id: string;
+  status: 'active' | 'paused' | 'completed';
+  started_at: string;
+  ended_at?: string;
+  duration_seconds: number;
+  total_calls: number;
+  connected_calls: number;
+  appointments_booked: number;
+  followups_scheduled: number;
+  notes?: string;
+  created_at: string;
+
+  // Joined
+  campaign?: Campaign;
+}
+
+export interface ProspectAssignment {
+  id: string;
+  prospect_id: string;
+  assigned_to: string;
+  assigned_by?: string;
+  status: 'assigned' | 'in_progress' | 'transferred' | 'unassigned';
+  assigned_at: string;
+}
+
+// ==============================================================================
+// ADDENDUM 3 : FIELD SESSIONS & SYNCHRONISATION HORS LIGNE
+// ==============================================================================
+
+export interface FieldSession {
+  id: string;
+  route_id?: string;
+  user_id: string;
+  status: 'planned' | 'ready' | 'in_progress' | 'suspended' | 'completed' | 'cancelled';
+  started_at?: string;
+  ended_at?: string;
+  total_visits: number;
+  visited_count: number;
+  appointments_booked: number;
+  notes?: string;
+  created_at: string;
+
+  // Joined
+  route?: FieldRoute;
+}
+
+export interface OfflineSyncQueueItem {
+  id: string;
+  user_id?: string;
+  entity_type: 'field_visit' | 'call_interaction' | 'prospect_update' | 'task_completion' | 'appointment_creation';
+  entity_id: string;
+  action: 'CREATE' | 'UPDATE' | 'DELETE';
+  payload: Record<string, any>;
+  status: 'pending' | 'synced' | 'conflict' | 'failed';
+  error_message?: string;
+  created_at: string;
+  synced_at?: string;
+}
+

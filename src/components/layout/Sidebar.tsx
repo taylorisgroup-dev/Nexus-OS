@@ -68,12 +68,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         },
         {
           id: 'phoning',
-          label: '1. Poste Phoning & Appels',
+          label: '1. NEXUS CALL DESK',
           icon: PhoneCall,
         },
         {
           id: 'field',
-          label: '2. Prospection Terrain',
+          label: '2. NEXUS FIELD',
           icon: Compass,
         },
         {
@@ -125,17 +125,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       ],
     },
     {
-      groupTitle: 'Gouvernance & Système',
+      groupTitle: 'Gouvernance & Moteur',
       items: [
+        {
+          id: 'automations',
+          label: 'WORKFLOW ENGINE',
+          icon: Cpu,
+          badge: '18 blocs',
+        },
         {
           id: 'branches_reports',
           label: 'Branches & Rapports',
           icon: GitBranch,
-        },
-        {
-          id: 'automations',
-          label: 'Automatisations',
-          icon: Cpu,
         },
         {
           id: 'settings',

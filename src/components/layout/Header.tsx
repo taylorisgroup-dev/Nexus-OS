@@ -30,15 +30,15 @@ export const Header: React.FC<HeaderProps> = ({
       subtitle: 'Données certifiées INSEE / SIRENE, RCS, dirigeants et coordonnées géocodées',
     },
     phoning: {
-      title: 'Canal 1 · Poste de Phoning Concentré',
-      subtitle: 'File d’appels priorisée, script dynamique en 5 étapes et matrice d’objections',
+      title: 'NEXUS CALL DESK · Poste de Phoning Haute Performance',
+      subtitle: 'File d’appels priorisée, guide dynamique en 4 étapes, objections instantanées et synchronisation Outlook',
     },
     field: {
-      title: 'Canal 2 · Prospection Terrain',
-      subtitle: 'Organisation des tournées physiques, géolocalisation et comptes rendus de visite',
+      title: 'NEXUS FIELD · Prospection Physique',
+      subtitle: 'Organisation des tournées terrain, guidage GPS Waze/Maps et synchronisation hors-connexion',
     },
     email: {
-      title: 'Canal 3 · Prospection Numérique & Emailing',
+      title: 'NEXUS EMAIL · Prospection Numérique',
       subtitle: 'Campagnes de messages ciblés via Microsoft Graph / Outlook avec archivage CRM',
     },
     prospects: {
@@ -62,8 +62,8 @@ export const Header: React.FC<HeaderProps> = ({
       subtitle: 'Maturité des pôles NEXUS, gouvernance transversale et rentabilité',
     },
     automations: {
-      title: 'Centre d’Automatisations & Alertes',
-      subtitle: 'Règles internes sûres, notifications in-app et garde-fous humains',
+      title: 'NEXUS WORKFLOW ENGINE',
+      subtitle: 'Moteur d’orchestration interne · 18 blocs exécutables et supervision en temps réel',
     },
     configurator: {
       title: 'Configurateur Web & Documents',

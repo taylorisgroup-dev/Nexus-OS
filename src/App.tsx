@@ -10,16 +10,16 @@ import { OffersView } from './components/offers/OffersView';
 import { ProjectsView } from './components/projects/ProjectsView';
 import { TasksView } from './components/tasks/TasksView';
 import { BranchesAndReportsView } from './components/branches/BranchesAndReportsView';
-import { AutomationsView } from './components/automations/AutomationsView';
+import { WorkflowEngineView } from './components/workflow/WorkflowEngineView';
 import { ConfiguratorView } from './components/configurator/ConfiguratorView';
 import { IdeasDecisionsView } from './components/ideas/IdeasDecisionsView';
 import { SettingsView } from './components/settings/SettingsView';
-import { PhoningStationView } from './components/phoning/PhoningStationView';
-import { LeadScraperView } from './components/acquisition/LeadScraperView';
+import { CallDeskView } from './components/call-desk/CallDeskView';
 import { NexusDataAcquisitionView } from './components/acquisition/NexusDataAcquisitionView';
-import { FieldProspectingView } from './components/field/FieldProspectingView';
+import { NexusFieldView } from './components/field/NexusFieldView';
 import { EmailProspectingView } from './components/email/EmailProspectingView';
 import { CampaignsView } from './components/campaigns/CampaignsView';
+import { ExecutiveCockpitView } from './components/cockpit/ExecutiveCockpitView';
 import { Modal } from './components/ui/Modal';
 import { TASK_PRIORITIES, TASK_STATUSES, type ActiveSection, type TaskPriority, type TaskStatus } from './types/nexus';
 import { AlertCircle, RefreshCw, X } from 'lucide-react';
@@ -153,10 +153,7 @@ const AppContent: React.FC<{
         {/* Viewport View */}
         <main className="flex-1 p-4 sm:p-8 max-w-7xl w-full mx-auto">
           {currentSection === 'cockpit' && (
-            <CockpitView
-              onNavigate={onSelectSection}
-              onOpenCreateTask={onOpenQuickTask}
-            />
+            <ExecutiveCockpitView onNavigateToSection={(s) => onSelectSection(s as ActiveSection)} />
           )}
           {currentSection === 'campaigns' && (
             <CampaignsView
@@ -177,12 +174,12 @@ const AppContent: React.FC<{
             <ProspectsView onNavigate={onSelectSection} />
           )}
           {currentSection === 'phoning' && (
-            <PhoningStationView
-              onNavigateSection={onSelectSection}
+            <CallDeskView
               initialCampaignId={selectedPhoningCampaignId}
+              onNavigateToCockpit={() => onSelectSection('cockpit')}
             />
           )}
-          {currentSection === 'field' && <FieldProspectingView />}
+          {currentSection === 'field' && <NexusFieldView />}
           {currentSection === 'email' && <EmailProspectingView />}
           {currentSection === 'offers' && <OffersView />}
           {currentSection === 'projects' && <ProjectsView />}
@@ -190,7 +187,7 @@ const AppContent: React.FC<{
           {currentSection === 'branches_reports' && (
             <BranchesAndReportsView onNavigate={onSelectSection} />
           )}
-          {currentSection === 'automations' && <AutomationsView />}
+          {currentSection === 'automations' && <WorkflowEngineView />}
           {currentSection === 'configurator' && <ConfiguratorView />}
           {currentSection === 'ideas_decisions' && <IdeasDecisionsView />}
           {currentSection === 'settings' && <SettingsView />}
